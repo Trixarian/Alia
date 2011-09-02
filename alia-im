@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Starting Alia IM..."
+nohup sh -c "while sleep 10 ; do python pyborg-im.py >> alia-im.log 2>&1 ; done" > /dev/null 2>&1 &
