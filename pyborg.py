@@ -304,8 +304,12 @@ class pyborg:
 					file = open(filename, 'w+b')
 					file.write(data)
 					file.close()
-			except (OSError, IOError), e:
-				print "no zip found. Is the programm launch for first time ?"
+			except:
+				print "No zip found or file corrupt - Recreating..."
+				try:
+					os.remove('archive.zip')
+				except:
+					pass
 
 
 			f = open("words.dat", "wb")
@@ -375,8 +379,11 @@ class pyborg:
 					char += 1
 				if c.isdigit():
 					digit += 1
-		
-			c = len(self.words[w])
+
+			try:
+				c = len(self.words[w])
+			except:
+				c = 2
 			if c < 2 or ( digit and char ):
 				liste.append(w)
 				compteur += 1
@@ -655,7 +662,10 @@ class pyborg:
 
 				
 				#Compte les mots inferieurs a cette limite
-					c = len(self.words[w])
+					try:
+						c = len(self.words[w])
+					except:
+						c = 2
 					if c < 2 or ( digit and char ):
 						liste.append(w)
 						compteur += 1
