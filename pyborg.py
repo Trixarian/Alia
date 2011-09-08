@@ -232,7 +232,7 @@ class pyborg:
 				self.lines = marshal.loads(s)
 				del s
 			except (EOFError, IOError), e:
-				# Create mew database
+				# Create new database
 				self.words = {}
 				self.lines = {}
 				print "Error reading saves. New database created."
@@ -305,12 +305,9 @@ class pyborg:
 					file.write(data)
 					file.close()
 			except:
-				print "No zip found or file corrupt - Recreating..."
-				try:
-					os.remove('archive.zip')
-				except:
-					pass
-
+				print "No zip found or file corrupt - Trying to restore from backup..."
+				nozip = "yes"
+				pass
 
 			f = open("words.dat", "wb")
 			s = marshal.dumps(self.words)
@@ -335,11 +332,12 @@ class pyborg:
 			f.close()
 
 			try:
-				os.remove('words.dat')
-				os.remove('lines.dat')
-				os.remove('version')
+				if nozip != "yes":
+					os.remove('words.dat')
+					os.remove('lines.dat')
+					os.remove('version')
 			except (OSError, IOError), e:
-				print "could not remove the files"
+				print "Could not remove the files"
 
 			f = open("words.txt", "w")
 			# write each words known
@@ -360,7 +358,6 @@ class pyborg:
 			wordlist.sort(lambda x,y: cmp(y[1],x[1]))
 			map( (lambda x: f.write(str(x[0])+"\n") ), wordlist)
 			f.close()
-
 
 			# Save settings
 			self.settings.save()
