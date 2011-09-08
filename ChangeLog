@@ -33,3 +33,6 @@ Initial release
 * Modified cfg file generation to be closer to alia's default ones [pyborg.py, pyborg-irc.py & pyborg-im.py]
 * Redid files to create smaller bot logs when using the bash scripts [pyborg.py, pyborg-irc.py & pyborg-im.py]
 * Removed the parts of pyborg we're not using - people who wants the full pyborg can download it.
+* Fixed the Zip function in save_all() [pyborg.py]
+* Fixed the Zipfile error AGAIN! [pyborg.py]
+* Removed saving functions from the interfaces to prevent saving on quit. [pyborg-irc.py & pyborg-im.py]

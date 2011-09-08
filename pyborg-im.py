@@ -462,9 +462,6 @@ class ModIRC(SingleServerIRCBot):
 					for x in xrange (2, len (command_list)):
 						phrase = phrase + str(command_list[x]) + " "
 					self.output(phrase, ("", command_list[1], "", c, e))
-			# Save changes
-			self.pyborg.settings.save()
-			self.settings.save()
 	
 		if msg == "":
 			return 0
@@ -555,5 +552,4 @@ if __name__ == "__main__":
 	except:
 		traceback.print_exc()
 	bot.disconnect(bot.settings.quitmsg)
-	my_pyborg.save_all()
 	del my_pyborg
