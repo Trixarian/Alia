@@ -296,6 +296,7 @@ class pyborg:
 	def save_all(self):
 		if self.settings.process_with == "pyborg" and self.settings.no_save != "True":
 			print "Writing dictionary..."
+			nozip = "no"
 
 			try:
 				zfile = zipfile.ZipFile('archive.zip','r')
