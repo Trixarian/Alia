@@ -831,7 +831,6 @@ class pyborg:
 			# Quit
 			elif command_list[0] == "!quit":
 				# Close the dictionary
-				self.save_all()
 				sys.exit()
 				
 			# Save changes
