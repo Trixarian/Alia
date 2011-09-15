@@ -307,7 +307,6 @@ class pyborg:
 					file.close()
 			except:
 				print "No zip found or file corrupt - Trying to restore from backup..."
-				nozip = "yes"
 				pass
 
 			f = open("words.dat", "wb")
@@ -324,7 +323,6 @@ class pyborg:
 			f.write(self.saves_version)
 			f.close()
 
-
 			#zip the files
 			f = zipfile.ZipFile('archive.zip','w',zipfile.ZIP_DEFLATED)
 			f.write('words.dat')
@@ -337,13 +335,6 @@ class pyborg:
 				f2.close()
 				f.write('version')
 			f.close()
-
-			try:
-				if nozip != "yes":
-					os.remove('words.dat')
-					os.remove('lines.dat')
-			except (OSError, IOError), e:
-				print "Could not remove the files"
 
 			f = open("words.txt", "w")
 			# write each words known
