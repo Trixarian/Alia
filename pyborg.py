@@ -329,14 +329,19 @@ class pyborg:
 			f = zipfile.ZipFile('archive.zip','w',zipfile.ZIP_DEFLATED)
 			f.write('words.dat')
 			f.write('lines.dat')
-			f.write('version')
+			try:
+				f.write('version')
+			except:
+				f2 = open("version", "w")
+				f2.write("1.1.0")
+				f2.close()
+				f.write('version')
 			f.close()
 
 			try:
 				if nozip != "yes":
 					os.remove('words.dat')
 					os.remove('lines.dat')
-					os.remove('version')
 			except (OSError, IOError), e:
 				print "Could not remove the files"
 
