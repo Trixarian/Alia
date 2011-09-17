@@ -479,7 +479,7 @@ class pyborg:
 			if message == "":
 				return
 			# else output
-			if owner==0: time.sleep(.2*len(message))
+			time.sleep(.2*len(message))
 			io_module.output(message, args)
 	
 	def do_commands(self, io_module, body, args, owner):
