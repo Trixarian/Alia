@@ -36,3 +36,6 @@ Initial release
 * Fixed the Zip function in save_all() [pyborg.py]
 * Fixed the Zipfile error AGAIN! [pyborg.py]
 * Removed saving functions from the interfaces to prevent saving on quit. [pyborg-irc.py & pyborg-im.py]
+* Fixed the Zipfile error yet again and removed the *.dat file deletion for a better back up system [pyborg.py]
+* Made the response delay effect owners too (except when responding to a command) [pyborg.py]
+* Yet more dictionary fixes and an automated way to delete corrupt zipfiles in the save_all function [pyborg.py]

@@ -307,8 +307,11 @@ class pyborg:
 					file.close()
 			except:
 				print "No zip found or file corrupt - Trying to restore from backup..."
-				pass
-
+				try:
+					os.remove('archive.zip')
+				except:
+					pass
+	
 			f = open("words.dat", "wb")
 			s = marshal.dumps(self.words)
 			f.write(s)
@@ -341,7 +344,10 @@ class pyborg:
 			wordlist = []
 			#Sort the list befor to export
 			for key in self.words.keys():
-				wordlist.append([key, len(self.words[key])])
+				try:
+					wordlist.append([key, len(self.words[key])])
+				except:
+					pass
 			wordlist.sort(lambda x,y: cmp(x[1],y[1]))
 			map( (lambda x: f.write(str(x[0])+"\n\r") ), wordlist)
 			f.close()
@@ -902,7 +908,10 @@ class pyborg:
 		unpack = struct.unpack
 		# update links
 		for x in wordlist:
-			word_contexts = words[x]
+			try:
+				word_contexts = words[x]
+			except:
+				word_contexts = ""
 			# Check all the word's links (backwards so we can delete)
 			for y in xrange(len(word_contexts)-1, -1, -1):
 				# Check for any of the deleted contexts
