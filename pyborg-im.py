@@ -179,7 +179,7 @@ class ModIRC(SingleServerIRCBot):
 	def get_version(self):
 		if self.settings.stealth:
 			# stealth mode. we shall be a windows luser today
-			return "VERSION mIRC v6.35 Khaled Mardam-Bey"
+			return "mIRC v6.35 Khaled Mardam-Bey"
 		else:
 			return self.pyborg.ver_string
 

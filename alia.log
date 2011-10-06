@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 40, in <module>
+    import pyborg
+  File "/home/irc/alia/pyborg.py", line 913
+    except
+         ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 40, in <module>
+    import pyborg
+  File "/home/irc/alia/pyborg.py", line 913
+    except
+         ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 40, in <module>
+    import pyborg
+  File "/home/irc/alia/pyborg.py", line 913
+    except
+         ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 40, in <module>
+    import pyborg
+  File "/home/irc/alia/pyborg.py", line 913
+    except
+         ^
+SyntaxError: invalid syntax
