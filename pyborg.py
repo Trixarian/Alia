@@ -40,6 +40,8 @@ def unfilter_reply(message, self):
 	This undoes the phrase mangling the central code does
 	so the bot sounds more human :P
 	"""
+	# Had to write my own initial capitalizing code *sigh*
+	message = "%s%s" % (message[:1].upper(), message[1:])
 	# Fixes punctuation
 	message = message.replace(" ?", "?")
 	message = message.replace(" !", "!")
@@ -51,7 +53,7 @@ def unfilter_reply(message, self):
 	message = message.replace(" i ", " I ")
 	message = message.replace("i'", "I'")
 	# Fixes emoticons that don't work in lowercase
-	emoticon = re.search("(:|x|X|;|=|8){1}(-)*(p|x|d){1}", message)
+	emoticon = re.search("(:|x|;|=|8){1}(-)*(p|x|d){1}", message, re.IGNORECASE)
 	if not emoticon == None: 
 		emoticon = "%s" % emoticon.group()
 		message = message.replace(emoticon, emoticon.upper())
@@ -126,7 +128,7 @@ def filter_message(message, bot):
 			for z in bot.settings.aliases.keys():
 				for alias in bot.settings.aliases[z]:
 					pattern = "^%s$" % alias
-					if re.search(pattern, words[x]):
+					if re.search(pattern, words[x], re.IGNORECASE):
 						words[x] = z
 
 	message = " ".join(words)
@@ -257,7 +259,7 @@ class pyborg:
 						for z in self.settings.aliases.keys():
 							for alias in self.settings.aliases[z]:
 								pattern = "^%s$" % alias
-								if self.re.search(pattern, x):
+								if self.re.search(pattern, x, re.IGNORECASE):
 									print "replace %s with %s" %(x, z)
 									self.replace(x, z)
 
@@ -453,9 +455,9 @@ class pyborg:
 			#Look if we can find a prepared answer
 			for sentence in self.answers.sentences.keys():
 				pattern = "^%s$" % sentence
-				if re.search(pattern, body):
+				if re.search(pattern, body, re.IGNORECASE):
 					message = self.answers.sentences[sentence][randint(0, len(self.answers.sentences[sentence])-1)]
-					message = unfilter_reply(message, self)
+					message = self.unfilter_reply(message)
 					break
 				else:
 					if body in self.unfilterd:
@@ -466,9 +468,11 @@ class pyborg:
 			if message == "":
 				if self.settings.process_with == "pyborg":
 					message = self.reply(body)
-					message = unfilter_reply(message, self)
+					message = self.unfilter_reply(message)
 				elif self.settings.process_with == "megahal":
 					message = mh_python.doreply(body)
+					message = self.unfilter_reply(message)
+
 
 			# single word reply: always output
 			if len(message.split()) == 1:
@@ -1148,7 +1152,7 @@ class pyborg:
 
 				for censored in self.settings.censored:
 					pattern = "^%s$" % censored
-					if re.search(pattern, words[x]):
+					if re.search(pattern, words[x], re.IGNORECASE):
 						return
 
 				if len(words[x]) > 13 \

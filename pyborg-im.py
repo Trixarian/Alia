@@ -488,9 +488,6 @@ class ModIRC(SingleServerIRCBot):
 			message[0] = "#nick:"		
 		message = " ".join(message)
 
-		# Had to write my own initial capitalizing code *sigh*
-		message = "%s%s" % (message[:1].upper(), message[1:])		
-
 		# replace by the good nickname
 		message = message.replace("#nick", source)
 
