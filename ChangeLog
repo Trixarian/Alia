@@ -42,3 +42,4 @@ Initial release
 * The last(?) dictionary fix that seems to have removed all errors - FINALLY! [pyborg.py]
 * Removed lowercasing of learned data from the code. Should get pretty interesting from here on out [pyborg.py]
 * Alia now only changes her own nick to #nick instead of all nicks in the channel [pyborg-irc.py & pyborg-im.py]
+* Fixed the the Capitalization bug by actually writing my own routine for it [pyborg.py, pyborg-irc.py & pyborg-im.py]

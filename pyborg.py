@@ -40,11 +40,6 @@ def unfilter_reply(message, self):
 	This undoes the phrase mangling the central code does
 	so the bot sounds more human :P
 	"""
-	# Adds initial capitalization
-	# Leave this first or it breaks the case of later fixes...
-	message = message.split()
-	message[0] = message[0].capitalize()
-	message = " ".join(message)
 	# Fixes punctuation
 	message = message.replace(" ?", "?")
 	message = message.replace(" !", "!")
@@ -74,7 +69,6 @@ def filter_message(message, bot):
 	padding ? and ! with ". " so they also terminate lines
 	and converting to lower case.
 	"""
-	
 	# remove garbage
 	message = message.replace("\"", "") # remove "s
 	message = message.replace("\n", " ") # remove newlines
@@ -475,7 +469,6 @@ class pyborg:
 					message = unfilter_reply(message, self)
 				elif self.settings.process_with == "megahal":
 					message = mh_python.doreply(body)
-					message = unfilter_reply(message, self)
 
 			# single word reply: always output
 			if len(message.split()) == 1:
