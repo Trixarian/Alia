@@ -120,7 +120,6 @@ class ModIRC(SingleServerIRCBot):
 			  "reply_chance": ("Chance of reply (%) per message", 1),
 			  "quitmsg": ("IRC quit message", "Bye :-("),
 			  "password": ("password for control the bot (Edit manually !)", "")
-			  "pass": ("Password for your bitlbee account!", "")
 			} )
 
 		self.owners = self.settings.owners[:]
@@ -166,7 +165,7 @@ class ModIRC(SingleServerIRCBot):
 		print self.chans
 		for i in self.chans:
 			c.join(i)
-			c.privmsg(i, "identify %s" % self.settings.pass)
+			c.privmsg(i, "identify Iamthe1")
 		
 
 	def shutdown(self):
@@ -294,10 +293,11 @@ class ModIRC(SingleServerIRCBot):
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1:return
 
-		#replace nicknames by "#nick"
+		#Replaces own nick with by "#nick"
 		if e.eventtype() == "pubmsg":
-			for x in self.channels[target].users():
-				body = body.replace(x, "#nick")
+				#for x in self.channels[target].users():
+				body = body.replace(self.settings.myname.lower(), "#nick")
+				body = body.replace(self.settings.myname, "#nick")
 
 		# Pass message onto pyborg
 		if source in self.owners and e.source() in self.owner_mask:

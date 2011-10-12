@@ -42,7 +42,9 @@ def unfilter_reply(message, self):
 	"""
 	# Adds initial capitalization
 	# Leave this first or it breaks the case of later fixes...
-	message = message.capitalize()
+	message = message.split()
+	message[0] = message[0].capitalize()
+	message = " ".join(message)
 	# Fixes punctuation
 	message = message.replace(" ?", "?")
 	message = message.replace(" !", "!")
@@ -73,9 +75,6 @@ def filter_message(message, bot):
 	and converting to lower case.
 	"""
 	
-	# to lowercase
-	message = message.lower()
-
 	# remove garbage
 	message = message.replace("\"", "") # remove "s
 	message = message.replace("\n", " ") # remove newlines
@@ -117,6 +116,7 @@ def filter_message(message, bot):
 	message = message.replace("- . -", "-.-")
 	message = message.replace("0 . o", "0.o")
 	message = message.replace("o . o", "o.o")
+	message = message.replace("O . O", "O.O")
 	message = message.replace("< . <", "<.<")
 	message = message.replace("> . >", ">.>")
 	message = message.replace("> . <", ">.<")
@@ -143,7 +143,7 @@ class pyborg:
 	import re
 	import cfgfile
 
-	ver_string = "I am a PyBorg version 1.1.0"
+	ver_string = "PyBorg version 1.1.0"
 	saves_version = "1.1.0"
 
 	# Main command list
