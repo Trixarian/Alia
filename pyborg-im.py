@@ -276,8 +276,8 @@ class ModIRC(SingleServerIRCBot):
 			return
 
 		# Ignore quoted, url and command messages
-		quoted_message = re.match("( )*(<|\(|\[|\"|'|\.){1}", body[0:2])
-		url_message = re.match("http(s)*:\/\/", body[0:]) 
+		quoted_message = re.match("( )*(<|\(|\[|\"|'|\.){1}", body[0:2], re.IGNORECASE)
+		url_message = re.match("http(s)*:\/\/", body[0:], re.IGNORECASE) 
 		if quoted_message and not body[0:2] == "<3" and not body[0:3] == "<.<":
 			return
 		if (not source in self.owners) and body[0:1] == "!":
@@ -293,7 +293,7 @@ class ModIRC(SingleServerIRCBot):
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1:return
 
-		#Replaces own nick with by "#nick"
+		#Replaces own nick with "#nick"
 		if e.eventtype() == "pubmsg":
 				#for x in self.channels[target].users():
 				body = body.replace(self.settings.myname.lower(), "#nick")
@@ -487,6 +487,9 @@ class ModIRC(SingleServerIRCBot):
 		if message[0] == "#nick;":
 			message[0] = "#nick:"		
 		message = " ".join(message)
+
+		# Had to write my own initial capitalizing code *sigh*
+		message = "%s%s" % (message[:1].upper(), message[1:])
 
 		# replace by the good nickname
 		message = message.replace("#nick", source)

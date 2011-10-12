@@ -1,0 +1,140 @@
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 548, in <module>
+    bot.our_start()
+  File "pyborg-irc.py", line 162, in our_start
+    self.start()
+  File "/home/irc/pyborg-1.1.2/ircbot.py", line 253, in start
+    SimpleIRCClient.start(self)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1107, in start
+    self.ircobj.process_forever()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 233, in process_forever
+    self.process_once(timeout)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 218, in process_once
+    self.process_data(i)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 187, in process_data
+    c.process_data()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 572, in process_data
+    self._handle_event(Event(command, prefix, target, [m]))
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 599, in _handle_event
+    self.irclibobj._handle_event(self, event)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 331, in _handle_event
+    if handler[1](connection, event) == "NO MORE":
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1046, in _dispatcher
+    getattr(self, m)(c, e)
+  File "pyborg-irc.py", line 206, in on_privmsg
+    self.on_msg(c, e)
+  File "pyborg-irc.py", line 302, in on_msg
+    self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
+  File "/home/irc/alia/pyborg.py", line 469, in process_msg
+    message = self.unfilter_reply(message)
+AttributeError: pyborg instance has no attribute 'unfilter_reply'
+Reading dictionary...
+Connecting to server...
+['#chatz', '#chat']
+Locked owner as Trixar_za!trixar@gigirc.com
+[09:45:28] <Trixar_za> > Alia> Alia: Respond
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 548, in <module>
+    bot.our_start()
+  File "pyborg-irc.py", line 162, in our_start
+    self.start()
+  File "/home/irc/pyborg-1.1.2/ircbot.py", line 253, in start
+    SimpleIRCClient.start(self)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1107, in start
+    self.ircobj.process_forever()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 233, in process_forever
+    self.process_once(timeout)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 218, in process_once
+    self.process_data(i)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 187, in process_data
+    c.process_data()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 572, in process_data
+    self._handle_event(Event(command, prefix, target, [m]))
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 599, in _handle_event
+    self.irclibobj._handle_event(self, event)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 331, in _handle_event
+    if handler[1](connection, event) == "NO MORE":
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1046, in _dispatcher
+    getattr(self, m)(c, e)
+  File "pyborg-irc.py", line 206, in on_privmsg
+    self.on_msg(c, e)
+  File "pyborg-irc.py", line 302, in on_msg
+    self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
+  File "/home/irc/alia/pyborg.py", line 469, in process_msg
+    message = self.unfilter_reply(message)
+AttributeError: pyborg instance has no attribute 'unfilter_reply'
+Reading dictionary...
+Connecting to server...
+['#chatz', '#chat']
+Locked owner as Trixar_za!trixar@gigirc.com
+[09:45:41] <Trixar_za> > Alia> Alia: Say something to me please
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 548, in <module>
+    bot.our_start()
+  File "pyborg-irc.py", line 162, in our_start
+    self.start()
+  File "/home/irc/pyborg-1.1.2/ircbot.py", line 253, in start
+    SimpleIRCClient.start(self)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1107, in start
+    self.ircobj.process_forever()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 233, in process_forever
+    self.process_once(timeout)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 218, in process_once
+    self.process_data(i)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 187, in process_data
+    c.process_data()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 572, in process_data
+    self._handle_event(Event(command, prefix, target, [m]))
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 599, in _handle_event
+    self.irclibobj._handle_event(self, event)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 331, in _handle_event
+    if handler[1](connection, event) == "NO MORE":
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1046, in _dispatcher
+    getattr(self, m)(c, e)
+  File "pyborg-irc.py", line 206, in on_privmsg
+    self.on_msg(c, e)
+  File "pyborg-irc.py", line 302, in on_msg
+    self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
+  File "/home/irc/alia/pyborg.py", line 469, in process_msg
+    message = self.unfilter_reply(message)
+AttributeError: pyborg instance has no attribute 'unfilter_reply'
+Reading dictionary...
+Connecting to server...
+['#chatz', '#chat']
+Locked owner as Trixar_za!trixar@gigirc.com
+[09:46:15] <Trixar_za> > Alia> Alia: Say something to me please
+Traceback (most recent call last):
+  File "pyborg-irc.py", line 548, in <module>
+    bot.our_start()
+  File "pyborg-irc.py", line 162, in our_start
+    self.start()
+  File "/home/irc/pyborg-1.1.2/ircbot.py", line 253, in start
+    SimpleIRCClient.start(self)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1107, in start
+    self.ircobj.process_forever()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 233, in process_forever
+    self.process_once(timeout)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 218, in process_once
+    self.process_data(i)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 187, in process_data
+    c.process_data()
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 572, in process_data
+    self._handle_event(Event(command, prefix, target, [m]))
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 599, in _handle_event
+    self.irclibobj._handle_event(self, event)
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 331, in _handle_event
+    if handler[1](connection, event) == "NO MORE":
+  File "/home/irc/pyborg-1.1.2/irclib.py", line 1046, in _dispatcher
+    getattr(self, m)(c, e)
+  File "pyborg-irc.py", line 206, in on_privmsg
+    self.on_msg(c, e)
+  File "pyborg-irc.py", line 302, in on_msg
+    self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
+  File "/home/irc/alia/pyborg.py", line 469, in process_msg
+    message = self.unfilter_reply(message)
+AttributeError: pyborg instance has no attribute 'unfilter_reply'
+Reading dictionary...
+Connecting to server...
+['#chatz', '#chat']
+Locked owner as Trixar_za!trixar@gigirc.com
+[09:46:35] <Trixar_za> > Alia> Alia: Say something to me please

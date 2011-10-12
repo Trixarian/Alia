@@ -40,6 +40,7 @@ def unfilter_reply(message, self):
 	This undoes the phrase mangling the central code does
 	so the bot sounds more human :P
 	"""
+
 	# Had to write my own initial capitalizing code *sigh*
 	message = "%s%s" % (message[:1].upper(), message[1:])
 	# Fixes punctuation
@@ -457,7 +458,7 @@ class pyborg:
 				pattern = "^%s$" % sentence
 				if re.search(pattern, body, re.IGNORECASE):
 					message = self.answers.sentences[sentence][randint(0, len(self.answers.sentences[sentence])-1)]
-					message = self.unfilter_reply(message)
+					message = unfilter_reply(message, self)
 					break
 				else:
 					if body in self.unfilterd:
@@ -468,10 +469,10 @@ class pyborg:
 			if message == "":
 				if self.settings.process_with == "pyborg":
 					message = self.reply(body)
-					message = self.unfilter_reply(message)
+					message = unfilter_reply(message, self)
 				elif self.settings.process_with == "megahal":
 					message = mh_python.doreply(body)
-					message = self.unfilter_reply(message)
+					message = unfilter_reply(message, self)
 
 
 			# single word reply: always output

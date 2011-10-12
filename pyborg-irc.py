@@ -274,8 +274,8 @@ class ModIRC(SingleServerIRCBot):
 			return
 
 		# Ignore quoted, url and command messages
-		quoted_message = re.match("( )*(<|\(|\[|\"|'|\.){1}", body[0:2])
-		url_message = re.match("http(s)*:\/\/", body[0:]) 
+		quoted_message = re.match("( )*(<|\(|\[|\"|'|\.){1}", body[0:2], re.IGNORECASE)
+		url_message = re.match("http(s)*:\/\/", body[0:], re.IGNORECASE) 
 		if quoted_message and not body[0:2] == "<3" and not body[0:3] == "<.<":
 			return
 		if (not source in self.owners) and body[0:1] == "!":

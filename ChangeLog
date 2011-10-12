@@ -44,3 +44,4 @@ Initial release
 * Alia now only changes her own nick to #nick instead of all nicks in the channel [pyborg-irc.py & pyborg-im.py]
 * Fixed the the Capitalization bug by actually writing my own routine for it [pyborg.py, pyborg-irc.py & pyborg-im.py]
 * Moved the Capitilization code back into the core and made the regex code case-insensitive [pyborg.py, pyborg-irc.py & pyborg-im.py]
+* Fixed my bug caused by altering the unfilter function within the code [pyborg.py]
