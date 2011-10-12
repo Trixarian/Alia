@@ -6,7 +6,9 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia has bash scripts to start her quietly and keep small logs which only report when bugs happen.
 * Alia self-optimises and self-repairs - if a bug occurs, Alia will attempt to correct it herself without human intervention. She will also optimise and save her dictionary/word list every 2 hours and rebuild it every day to keep it error free.
 * Alia strips common error causing input (like urls and strange characters) by default to avoid dictionary corruption.
+* Alia doesn't lowercase learned data at all. She'll respond in the same way as she learned it!
 * Alia doesn't mangle emoticons (smileys) or punctuation. She also correct I and I contractions and capitalizes the first letter of every sentence.
+* Alia doesn't mangle nicknames anymore either. She only changes her own nickname to the user she is reponding to in her responses now.
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
 And many more! (See ChangeLog for complete list)
