@@ -1,4 +1,4 @@
-Alia is a self-optimising & self-repairing Pyborg IRC Bot.
+Alia is a self-optimising & self-repairing Pyborg IRC Bot with the added ability to be taught via command.
 
 The original Pyborg was written by Tom Morton and Sébastien Dailly. It's a simple python Markov chain driven bot (similar to MegaHAL) with the unique ability to learn speech patterns by figure out which words go togeher well. This gives it the ability to generate replies on it's own aswell as repeating previously learned responses.
 
@@ -12,9 +12,18 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
 And many more! (See ChangeLog for complete list)
+* Alia can now be taught responses with the !teach or !learn commands.
 
 To use Alia, just run python pyborg-irc.py to generate the cfg files. Press Ctrl+C to stop pyborg-irc.py.
 Modify pyborg-irc.cfg and pyborg.cfg to suit your neeeds and then use ./alia to start the bot silently.
 Now allow her to idle in a busy channel so she can learn some basic responses. That's it. You're done. Enjoy!
+
+To teach Alia a response, use the !learn or !teach command with the trigger and response seperated by an |.
+Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters).
+To insert a user's nickname it's responding to into the response, please use the #nick to represent their nick.
+Triggers are searched by closest matches so single word or short triggers work better, but words can be searched within longer triggers.
+Examples:
+!teach This is a trigger | And this is a response!
+!learn Hey There!|Hey #nick!
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.

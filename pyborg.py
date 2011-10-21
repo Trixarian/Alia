@@ -29,11 +29,43 @@
 from random import *
 import sys
 import os
+import fileinput
 import marshal	# buffered marshal is bloody fast. wish i'd found this before :)
 import struct
 import time
 import zipfile
 import re
+
+# This will make the !learn and !teach magic work ;)
+def dbread(key):
+	value = None
+	if os.path.isfile("qdb.dat"):
+		file = open("qdb.dat")
+		for line in file.readlines():
+			if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+				if key.lower() is "":
+					value = "Very funny - Now how about a question?" 
+					break
+				else:
+					try: value = int(line.split(":=:")[1].strip())
+					except ValueError, err: value = line.split(":=:")[1].strip()
+					break
+		file.close()
+	return value
+
+def dbwrite(key, value):
+	if dbread(key) is None:
+		file = open("qdb.dat", "a")
+		file.write(str(key)+":=:"+str(value)+"\n")
+		file.close()
+
+	else:
+		for line in fileinput.input("qdb.dat" ,inplace =1):
+			if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+				print str(key)+":=:"+str(value)
+			else:
+				print line.strip()
+
 
 def unfilter_reply(message, self):
 	"""
@@ -191,6 +223,9 @@ class pyborg:
 		self.unfilterd = {}
 		self.base_time = time.time()
 		self.opt_times = 0
+
+		if dbread("first test message") is None:
+			dbwrite("This is the first test message", "And this is it's response")
 
 		# Read the dictionary
 		if self.settings.process_with == "pyborg":
@@ -453,26 +488,29 @@ class pyborg:
 
 			message  = ""
 
-			#Look if we can find a prepared answer
-			for sentence in self.answers.sentences.keys():
-				pattern = "^%s$" % sentence
-				if re.search(pattern, body, re.IGNORECASE):
-					message = self.answers.sentences[sentence][randint(0, len(self.answers.sentences[sentence])-1)]
-					message = unfilter_reply(message, self)
-					break
-				else:
-					if body in self.unfilterd:
-						self.unfilterd[body] = self.unfilterd[body] + 1
+			# Look if we can find a prepared answer
+			if dbread(body.lower()):
+				message = dbread(body.lower())
+			else:
+				for sentence in self.answers.sentences.keys():
+					pattern = "^%s$" % sentence
+					if re.search(pattern, body, re.IGNORECASE):
+						message = self.answers.sentences[sentence][randint(0, len(self.answers.sentences[sentence])-1)]
+						message = unfilter_reply(message, self)
+						break
 					else:
-						self.unfilterd[body] = 0
+						if body in self.unfilterd:
+							self.unfilterd[body] = self.unfilterd[body] + 1
+						else:
+							self.unfilterd[body] = 0
 
-			if message == "":
-				if self.settings.process_with == "pyborg":
-					message = self.reply(body)
-					message = unfilter_reply(message, self)
-				elif self.settings.process_with == "megahal":
-					message = mh_python.doreply(body)
-					message = unfilter_reply(message, self)
+				if message == "":
+					if self.settings.process_with == "pyborg":
+						message = self.reply(body)
+						message = unfilter_reply(message, self)
+					elif self.settings.process_with == "megahal":
+						message = mh_python.doreply(body)
+						message = unfilter_reply(message, self)
 
 
 			# single word reply: always output
@@ -500,6 +538,16 @@ class pyborg:
 		# Version string
 		if command_list[0] == "!version":
 			msg = self.ver_string
+
+		# Learn/Teach commands
+		if command_list[0] == "!teach" or command_list[0] == "!learn":
+			try:
+				key = ' '.join(command_list[1:]).split("|")[0].strip()
+				value = ' '.join(command_list[1:]).split("|")[1].strip()
+				dbwrite(key[0:], value[0:])
+				msg = "New response learned!"
+			except:
+				msg = "I couldn't learn that!"
 
 		# How many words do we know?
 		elif command_list[0] == "!words" and self.settings.process_with == "pyborg":
