@@ -359,7 +359,6 @@ class pyborg:
 			f = zipfile.ZipFile('archive.zip','w',zipfile.ZIP_DEFLATED)
 			f.write('words.dat')
 			f.write('lines.dat')
-			f.write('qdb.dat')
 			try:
 				f.write('version')
 			except:
@@ -485,10 +484,12 @@ class pyborg:
 		if randint(0, 99) < replyrate:
 
 			message  = ""
+			lresponse = 0
 
 			# Look if we can find a prepared answer
 			if dbread(body.lower()):
 				message = dbread(body.lower())
+				lresponse = 1
 			else:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
@@ -519,7 +520,11 @@ class pyborg:
 			if message == "":
 				return
 			# else output
-			time.sleep(.2*len(message))
+			if lresponse:
+				# Quicker response time for learned responses to compensate for db read times
+				time.sleep(.15*len(message))
+			else:
+				time.sleep(.2*len(message))
 			io_module.output(message, args)
 	
 	def do_commands(self, io_module, body, args, owner):
