@@ -47,3 +47,4 @@ Initial release
 * Fixed my bug caused by altering the unfilter function within the code [pyborg.py]
 * Fixed a potential bug and fixed stealth mode code [pyborg-irc.py & pyborg-im.py]
 * Added the !learn and !teach command and the learning system to make them work [pyborg.py]
+* Extended new learning system by adding the !forget and !find commands [pyborg.py]

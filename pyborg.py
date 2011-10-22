@@ -44,7 +44,6 @@ def dbread(key):
 		for line in file.readlines():
 			if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
 				if key.lower() is "":
-					value = "Very funny - Now how about a question?" 
 					break
 				else:
 					try: value = int(line.split(":=:")[1].strip())
@@ -176,8 +175,7 @@ class pyborg:
 	saves_version = "1.1.0"
 
 	# Main command list
-	commandlist = "Pyborg commands:\n!checkdict, !contexts, !help, !known, !learning, !rebuilddict, \
-!replace, !unlearn, !purge, !version, !words, !limit, !alias, !save, !censor, !uncensor, !owner"
+	commandlist = "Pyborg commands:\n!checkdict, !contexts, !help, !known, !learning, !rebuilddict, !replace, !unlearn, !purge, !version, !words, !limit, !alias, !save, !censor, !uncensor, !owner, !learn, !teach, !forget, !find"
 	commanddict = {
 		"help": "Owner command. Usage: !help [command]\nPrints information about using a command, or a list of commands if no command is given",
 		"version": "Usage: !version\nDisplay what version of Pyborg we are running",
@@ -352,7 +350,6 @@ class pyborg:
 			s = marshal.dumps(self.lines)
 			f.write(s)
 			f.close()
-
 			#save the version
 			f = open("version", "w")
 			f.write(self.saves_version)
@@ -362,6 +359,7 @@ class pyborg:
 			f = zipfile.ZipFile('archive.zip','w',zipfile.ZIP_DEFLATED)
 			f.write('words.dat')
 			f.write('lines.dat')
+			f.write('qdb.dat')
 			try:
 				f.write('version')
 			except:
@@ -546,8 +544,40 @@ class pyborg:
 				value = ' '.join(command_list[1:]).split("|")[1].strip()
 				dbwrite(key[0:], value[0:])
 				msg = "New response learned!"
-			except:
-				msg = "I couldn't learn that!"
+			except: msg = "I couldn't learn that!"
+
+		# Forget command
+		if command_list[0] == "!forget":
+			if os.path.isfile("qdb.dat"):
+				try:
+					fcount = 0
+					key = ' '.join(command_list[1:]).strip()
+					for line in fileinput.input("qdb.dat" ,inplace =1):
+						if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+							fcount = fcount+1
+							pass
+						else: print line.strip()
+					if fcount > 1: msg = "I have forgotten %d instances of %s" % (fcount, key)
+					else: msg = "I have forgotten %d instance of %s" % (fcount, key)
+				except: msg = "Sorry, I couldn't forget that!"
+			else: msg = "You have to teach me before you can make me forget it!"
+
+		# Find response command
+		if command_list[0] == "!find":
+			if os.path.isfile("qdb.dat"):
+				rcount = 0
+				key = ' '.join(command_list[1:]).strip()
+				file = open("qdb.dat")
+				for line in file.readlines():
+					if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+						if key.lower() is "": pass
+						else: rcount = rcount+1
+				file.close()
+				if rcount < 1: msg = "I have no response for %s" % key
+				elif rcount == 1: msg = "Found %d response for %s" % (rcount, key)
+				else: msg = "Found %d responses for %s" % (rcount, key)
+			else: msg = "You need to teach me something first!"
+
 
 		# How many words do we know?
 		elif command_list[0] == "!words" and self.settings.process_with == "pyborg":

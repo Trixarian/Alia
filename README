@@ -12,7 +12,8 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
 And many more! (See ChangeLog for complete list)
-* Alia can now be taught responses with the !teach or !learn commands.
+* Alia can be taught responses with the !teach or !learn commands.
+* Alia's new taught responses can be searched with !find and forgotten with with !forget.
 
 To use Alia, just run python pyborg-irc.py to generate the cfg files. Press Ctrl+C to stop pyborg-irc.py.
 Modify pyborg-irc.cfg and pyborg.cfg to suit your neeeds and then use ./alia to start the bot silently.
@@ -21,9 +22,18 @@ Now allow her to idle in a busy channel so she can learn some basic responses. T
 To teach Alia a response, use the !learn or !teach command with the trigger and response seperated by an |.
 Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters).
 To insert a user's nickname it's responding to into the response, please use the #nick to represent their nick.
-Triggers are searched by closest matches so single word or short triggers work better, but words can be searched within longer triggers.
-Examples:
+Triggers are searched by closest matches so single word or short triggers work better, but words can be searched within longer triggers:
 !teach This is a trigger | And this is a response!
 !learn Hey There!|Hey #nick!
+
+To see how many responses match a phrase, use the !find command followed by the phrase:
+!find Joe
+!find Trixar_za is God
+
+To make Alia forget a learned response use the !forget command followed by the phrase.
+Examples:
+!forget Joe
+!forget Trixar_za is dumb
+
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.
