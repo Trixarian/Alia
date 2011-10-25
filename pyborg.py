@@ -546,6 +546,7 @@ class pyborg:
 		if command_list[0] == "!teach" or command_list[0] == "!learn":
 			try:
 				key = ' '.join(command_list[1:]).split("|")[0].strip()
+				key = re.sub("[\.\,\?\*\"\'!]","", key)
 				value = ' '.join(command_list[1:]).split("|")[1].strip()
 				dbwrite(key[0:], value[0:])
 				msg = "New response learned!"
