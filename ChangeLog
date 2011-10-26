@@ -50,3 +50,4 @@ Initial release
 * Extended new learning system by adding the !forget and !find commands [pyborg.py]
 * Slightly faster response time for learned responses (.05 faster than normal) [pyborg.py]
 * Added a punctuation clean up regex for keys used in the learning system so we get better matches overall [pyborg.py]
+* Added the !responses command to show how many responses the bot has learned so far [pyborg.py]
