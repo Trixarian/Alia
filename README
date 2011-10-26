@@ -30,10 +30,12 @@ To see how many responses match a phrase, use the !find command followed by the 
 !find Joe
 !find Trixar_za is God
 
-To make Alia forget a learned response use the !forget command followed by the phrase.
-Examples:
+To make Alia forget a learned response use the !forget command followed by the phrase:
 !forget Joe
 !forget Trixar_za is dumb
+
+To see how many responses Alia has learned so far you can use the !responses command:
+!responses
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.
 
