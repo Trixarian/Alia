@@ -23,7 +23,7 @@
 #
 # Tom Morton <tom@moretom.net>
 # Seb Dailly <seb.dailly@gmail.com>
-# Brenton Scott <admin@trixarian.za.net>
+# Brenton Scott <admin@trixarian.net>
 #
 
 from random import *
@@ -321,8 +321,6 @@ class pyborg:
 
 		self.settings.save()
 
-
-
 	def save_all(self):
 		if self.settings.process_with == "pyborg" and self.settings.no_save != "True":
 			print "Writing dictionary..."
@@ -549,7 +547,7 @@ class pyborg:
 				key = re.sub("[\.\,\?\*\"\'!]","", key)
 				value = ' '.join(command_list[1:]).split("|")[1].strip()
 				dbwrite(key[0:], value[0:])
-				msg = "New response learned!"
+				msg = "New response learned for: %s" % key
 			except: msg = "I couldn't learn that!"
 
 		# Forget command
@@ -563,8 +561,8 @@ class pyborg:
 							fcount = fcount+1
 							pass
 						else: print line.strip()
-					if fcount > 1: msg = "I have forgotten %d instances of %s" % (fcount, key)
-					else: msg = "I have forgotten %d instance of %s" % (fcount, key)
+					if fcount > 1: msg = "I've forgotten %d instances of %s" % (fcount, key)
+					else: msg = "I've forgotten %d instance of %s" % (fcount, key)
 				except: msg = "Sorry, I couldn't forget that!"
 			else: msg = "You have to teach me before you can make me forget it!"
 
@@ -580,10 +578,22 @@ class pyborg:
 						else: rcount = rcount+1
 				file.close()
 				if rcount < 1: msg = "I have no response for %s" % key
-				elif rcount == 1: msg = "Found %d response for %s" % (rcount, key)
-				else: msg = "Found %d responses for %s" % (rcount, key)
+				elif rcount == 1: msg = "I have %d response for %s" % (rcount, key)
+				else: msg = "I have %d responses for %s" % (rcount, key)
 			else: msg = "You need to teach me something first!"
 
+		if command_list[0] == "!responses":
+			if os.path.isfile("qdb.dat"):
+				rcount = 0
+				file = open("qdb.dat")
+				for line in file.readlines():
+					if line is "": pass
+					else: rcount = rcount+1
+				file.close()
+				if rcount < 1: msg = "I've learned no responses"
+				elif rcount == 1: msg = "I've learned %d responses" % rcount
+				else: msg = "I've learned %d responses" % rcount
+			else: msg = "You need to teach me something first!"
 
 		# How many words do we know?
 		elif command_list[0] == "!words" and self.settings.process_with == "pyborg":

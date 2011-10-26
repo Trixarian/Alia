@@ -40,5 +40,5 @@ For a complete list on how to use Alia, please see docs/README for the original 
 How to use
 ==========
 To use Alia, just run python pyborg-irc.py to generate the cfg files. Press Ctrl+C to stop pyborg-irc.py.
-Modify pyborg-irc.cfg and pyborg.cfg to suit your neeeds and then use ./alia to start the bot silently.
+Modify pyborg-irc.cfg and pyborg.cfg to suit your needs and then use ./alia to start the bot silently.
 Now allow her to idle in a busy channel so she can learn some basic responses. That's it. You're done. Enjoy!
