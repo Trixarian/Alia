@@ -220,6 +220,7 @@ class pyborg:
 			} )
 		self.unfilterd = {}
 		self.base_time = time.time()
+		self.save_time = time.time()
 		self.opt_times = 0
 
 		if dbread("first test message") is None:
@@ -393,7 +394,8 @@ class pyborg:
 			self.settings.save()
 
 	def auto_optimise(self):
-		# Let's purge out words with little or no context every 2 hours to optimise the word list
+		# This needs work since it seems to corrupt the damn db eventually :/
+		# Let's purge out words with little or no context every day to optimise the word list
 		t = time.time()
 		liste = []
 		compteur = 0
@@ -418,8 +420,8 @@ class pyborg:
 		for w in liste[0:]:
 			self.unlearn(w)
 
-		# Let's rebuild the dictionary every day to prevent purge clogs ;)
-		if self.opt_times >= 12:
+		# Let's rebuild the dictionary every week to prevent purge clogs ;)
+		if self.opt_times >= 7:
 			self.opt_times = 0
 			if self.settings.learning == 1:
 				t = time.time()
@@ -447,9 +449,15 @@ class pyborg:
 		If owner==1 allow owner commands.
 		"""
 		auto_time = time.time()
-		if (auto_time-self.base_time) >= 7210 and self.settings.process_with == "pyborg":
+		# Let's purge the db daily! ;)
+		if (auto_time-self.base_time) >= 86520 and self.settings.process_with == "pyborg":
 			self.auto_optimise()
 			self.base_time = time.time()
+
+		# Let's save a copy of the db every 2 hours
+		if (auto_time-self.save_time) >= 7210 and self.settings.process_with == "pyborg":
+			self.save_all()
+			self.save_time = time.time()
 
 		try:
 			if self.settings.process_with == "megahal": import mh_python
@@ -482,12 +490,10 @@ class pyborg:
 		if randint(0, 99) < replyrate:
 
 			message  = ""
-			lresponse = 0
 
 			# Look if we can find a prepared answer
 			if dbread(body.lower()):
 				message = dbread(body.lower())
-				lresponse = 1
 			else:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
@@ -518,9 +524,9 @@ class pyborg:
 			if message == "":
 				return
 			# else output
-			if lresponse:
-				# Quicker response time for learned responses to compensate for db read times
-				time.sleep(.15*len(message))
+			if len(message) >= 40:
+				# Quicker response time for long responses
+				time.sleep(8)
 			else:
 				time.sleep(.2*len(message))
 			io_module.output(message, args)
@@ -547,7 +553,7 @@ class pyborg:
 				key = re.sub("[\.\,\?\*\"\'!]","", key)
 				value = ' '.join(command_list[1:]).split("|")[1].strip()
 				dbwrite(key[0:], value[0:])
-				msg = "New response learned for: %s" % key
+				msg = "New response learned for %s" % key
 			except: msg = "I couldn't learn that!"
 
 		# Forget command
