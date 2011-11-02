@@ -53,3 +53,4 @@ Initial release
 * Added the !responses command to show how many responses the bot has learned so far [pyborg.py]
 * Altered the auto-optimise function to only purge every day and rebuilddict every week to avoid db corruption [pyborg.py]
 * Changed the response times again and forced limit of 8 seconds for responses over 40 characters long [pyborg.py]
+* Messed with the purge, save and rebuilddict times again. Now every 4 hours, 2 hours and 3 days respectively [pyborg.py]

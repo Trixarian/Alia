@@ -420,8 +420,8 @@ class pyborg:
 		for w in liste[0:]:
 			self.unlearn(w)
 
-		# Let's rebuild the dictionary every week to prevent purge clogs ;)
-		if self.opt_times >= 7:
+		# Let's rebuild the dictionary every 3 days to prevent purge clogs ;)
+		if self.opt_times >= 15:
 			self.opt_times = 0
 			if self.settings.learning == 1:
 				t = time.time()
@@ -449,8 +449,8 @@ class pyborg:
 		If owner==1 allow owner commands.
 		"""
 		auto_time = time.time()
-		# Let's purge the db daily! ;)
-		if (auto_time-self.base_time) >= 86520 and self.settings.process_with == "pyborg":
+		# Let's purge the db every 4 hours ;)
+		if (auto_time-self.base_time) >= 17304 and self.settings.process_with == "pyborg":
 			self.auto_optimise()
 			self.base_time = time.time()
 
