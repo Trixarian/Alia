@@ -552,8 +552,11 @@ class pyborg:
 				key = ' '.join(command_list[1:]).split("|")[0].strip()
 				key = re.sub("[\.\,\?\*\"\'!]","", key)
 				value = ' '.join(command_list[1:]).split("|")[1].strip()
-				dbwrite(key[0:], value[0:])
-				msg = "New response learned for %s" % key
+				if key == "#nick":
+					msg = "Stop trying to teach me something that will break me!"
+				else:
+					dbwrite(key[0:], value[0:])
+					msg = "New response learned for %s" % key
 			except: msg = "I couldn't learn that!"
 
 		# Forget command
