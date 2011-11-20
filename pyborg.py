@@ -223,8 +223,8 @@ class pyborg:
 		self.save_time = time.time()
 		self.opt_times = 0
 
-		if dbread("first test message") is None:
-			dbwrite("This is the first test message", "And this is it's response")
+		if dbread("hello") is None:
+			dbwrite("hello", "hi #nick")
 
 		# Read the dictionary
 		if self.settings.process_with == "pyborg":
@@ -383,7 +383,7 @@ class pyborg:
 			f = open("sentences.txt", "w")
 			# write each words known
 			wordlist = []
-			#Sort the list befor to export
+			#Sort the list before to export
 			for key in self.unfilterd.keys():
 				wordlist.append([key, self.unfilterd[key]])
 			wordlist.sort(lambda x,y: cmp(y[1],x[1]))
