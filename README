@@ -13,10 +13,10 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia doesn't mangle nicknames anymore either. She will only replace her own nick in learned responses.
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
-And many more! (See ChangeLog for complete list)
 * Alia can be taught responses with the !teach or !learn commands.
 * Alia's new taught responses can be searched with !find and forgotten with with !forget.
 * Alia can be copied over an existing pyborg copy and will uses the same dictionaries/wordlists as the old one.
+And many more! (See ChangeLog for complete list)
 
 New Commands:
 ~~~~~~~~~~~~~
