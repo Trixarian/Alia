@@ -292,7 +292,7 @@ class ModIRC(SingleServerIRCBot):
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1:return
 
-		#Replaces own nick with "#nick"
+		# Replaces own nick with "#nick"
 		if e.eventtype() == "pubmsg":
 				#for x in self.channels[target].users():
 				body = body.replace(self.settings.myname.lower(), "#nick")
@@ -300,7 +300,7 @@ class ModIRC(SingleServerIRCBot):
 
 		if body == "":
 			return
-
+		
 		# Pass message onto pyborg
 		if source in self.owners and e.source() in self.owner_mask:
 			self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
@@ -490,18 +490,22 @@ class ModIRC(SingleServerIRCBot):
 			message[0] = "#nick:"
 		message = " ".join(message)
 
-		# replace by the good nickname
-		message = message.replace("#nick", source)
+		# Fixes the Alia in words bug
+		message = message.replace("Austr#nick", "Australia")
+		message = message.replace("austr#nick", "Australia")
 
+		# Replace with the target's nickname
+		message = message.replace("#nick", source)
+		
 		# Decide. should we do a ctcp action?
 		if message.find(self.settings.myname.lower()+" ") == 0:
 			action = 1
 			message = message[len(self.settings.myname)+1:]
 		else:
 			action = 0
-
+		
 		# Joins replies and public messages
-		if e.eventtype() == "join" or e.eventtype() == "quit" or e.eventtype() == "part" or e.eventtype() == "pubmsg":
+		if e.eventtype() == "pubmsg" or e.eventtype() == "ctcp":
 			if action == 0:
 				print "[%s] <%s> > %s> %s" % ( get_time(), self.settings.myname, target, message)
 				c.privmsg(target, message)

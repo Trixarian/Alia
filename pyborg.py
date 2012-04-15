@@ -515,7 +515,6 @@ class pyborg:
 						message = mh_python.doreply(body)
 						message = unfilter_reply(message, self)
 
-
 			# single word reply: always output
 			if len(message.split()) == 1:
 				io_module.output(message, args)
