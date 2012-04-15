@@ -56,3 +56,4 @@ Initial release
 * Messed with the purge, save and rebuilddict times again. Now every 4 hours, 2 hours and 3 days respectively [pyborg.py]
 * Added a little protection from the known #nick teach bug... [pyborg.py]
 * Altered the default created entry when there is no qdb.dat more functional (it works with hello now ;)) [pyborg.py]
+* Made Alia respond when her nickname is used in actions! [pyborg-irc.py]

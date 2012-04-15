@@ -506,7 +506,7 @@ class ModIRC(SingleServerIRCBot):
 			action = 0
 
 		# Joins replies and public messages
-		if e.eventtype() == "join" or e.eventtype() == "quit" or e.eventtype() == "part" or e.eventtype() == "pubmsg":
+		if e.eventtype() == "pubmsg":
 			if action == 0:
 				print "[%s] <%s> > %s> %s" % ( get_time(), self.settings.myname, target, message)
 				c.privmsg(target, message)
