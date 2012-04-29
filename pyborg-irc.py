@@ -244,7 +244,7 @@ class ModIRC(SingleServerIRCBot):
 		else:
 			# A CTCP thing
 			if e.arguments()[0] == "ACTION":
-				body = source + " " + e.arguments()[1]
+				body = "+"+e.arguments()[1]
 			else:
 				# Ignore all the other CTCPs
 				return
@@ -497,10 +497,10 @@ class ModIRC(SingleServerIRCBot):
 		# Replace with the target's nickname
 		message = message.replace("#nick", source)
 		
-		# Decide. should we do a ctcp action?
-		if message.find(self.settings.myname.lower()+" ") == 0:
+		# Should we do a action?
+		if message[:1] == "+":
 			action = 1
-			message = message[len(self.settings.myname)+1:]
+			message = message[1:]
 		else:
 			action = 0
 		

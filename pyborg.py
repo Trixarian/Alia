@@ -65,6 +65,17 @@ def dbwrite(key, value):
 			else:
 				print line.strip()
 
+# Some more machic to fix some common issues with the teach system
+def teach_filter(message):
+	message = message.replace("||", "$C4")
+	message = message.replace("|-:", "$b7")
+	message = message.replace(":-|", "$b6")
+	message = message.replace(";-|", "$b5")
+	message = message.replace("|:", "$b4")
+	message = message.replace(";|", "$b3")
+	message = message.replace("=|", "$b2")
+	message = message.replace(":|", "$b1")
+	return message
 
 def unfilter_reply(message, self):
 	"""
@@ -84,6 +95,15 @@ def unfilter_reply(message, self):
 	# Fixes I and I contractions
 	message = message.replace(" i ", " I ")
 	message = message.replace("i'", "I'")
+	# Fixes the common issues with the teach system
+	message = message.replace("$C4", "||")
+	message = message.replace("$b7", "|-:")
+	message = message.replace("$b6", ";-|")
+	message = message.replace("$b5", ":-|")
+	message = message.replace("$b4", "|:")
+	message = message.replace("$b3", ";|")
+	message = message.replace("$b2", "=|")
+	message = message.replace("$b1", ":|")
 	# Fixes emoticons that don't work in lowercase
 	emoticon = re.search("(:|x|;|=|8){1}(-)*(p|x|d){1}", message, re.IGNORECASE)
 	if not emoticon == None: 
@@ -550,8 +570,8 @@ class pyborg:
 			try:
 				key = ' '.join(command_list[1:]).split("|")[0].strip()
 				key = re.sub("[\.\,\?\*\"\'!]","", key)
-				value = ' '.join(command_list[1:]).split("|")[1].strip()
-				if key == "#nick":
+				value = teach_filter(' '.join(command_list[1:]).split("|")[1].strip())
+				if "#nick" in key:
 					msg = "Stop trying to teach me something that will break me!"
 				else:
 					dbwrite(key[0:], value[0:])

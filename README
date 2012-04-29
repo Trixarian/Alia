@@ -16,6 +16,7 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia can be taught responses with the !teach or !learn commands.
 * Alia's new taught responses can be searched with !find and forgotten with with !forget.
 * Alia can be copied over an existing pyborg copy and will uses the same dictionaries/wordlists as the old one.
+* Alia can respond to and learn actions! This can be done via the teach system or by observing other user's actions.
 And many more! (See ChangeLog for complete list)
 
 New Commands:
@@ -37,6 +38,9 @@ To make Alia forget a learned response use the !forget command followed by the p
 
 To see how many responses Alia has learned so far you can use the !responses command:
 !responses
+
+You can also teach Alia to respond with an action instead of a message by prefixing plus (+) to the response:
+!teach I Love you!|+hugs #nick
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.
 
