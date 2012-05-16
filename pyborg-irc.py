@@ -294,9 +294,11 @@ class ModIRC(SingleServerIRCBot):
 
 		# Replaces own nick with "#nick"
 		if e.eventtype() == "pubmsg":
-				#for x in self.channels[target].users():
-				body = body.replace(self.settings.myname.lower(), "#nick")
-				body = body.replace(self.settings.myname, "#nick")
+			if body[0] == "!":
+				if self.irc_commands(body, source, target, c, e) == 1:return
+				else:
+					body = body.replace(self.settings.myname.lower(), "#nick")
+					body = body.replace(self.settings.myname, "#nick")
 
 		if body == "":
 			return
