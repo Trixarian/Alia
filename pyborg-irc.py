@@ -158,11 +158,9 @@ class ModIRC(SingleServerIRCBot):
 	def our_start(self):
 		print "Connecting to server..."
 		SingleServerIRCBot.__init__(self, self.settings.servers, self.settings.myname, self.settings.realname, 2)
-
 		self.start()
 
 	def on_welcome(self, c, e):
-		print self.chans
 		for i in self.chans:
 			c.join(i)
 
@@ -235,7 +233,6 @@ class ModIRC(SingleServerIRCBot):
 		# stuff like '!unlearn the' :-)
 		if not e.source() in self.owner_mask and source in self.owners:
 			self.owner_mask.append(e.source())
-			print "Locked owner as %s" % e.source()
 
 		# Message text
 		if len(e.arguments()) == 1:
@@ -248,10 +245,6 @@ class ModIRC(SingleServerIRCBot):
 			else:
 				# Ignore all the other CTCPs
 				return
-
-		# WHOOHOOO!!
-		if target == self.settings.myname or source == self.settings.myname:
-			print "[%s] <%s> > %s> %s" % ( get_time(), source, target, body)
 
 		# Ignore self.
 		if source == self.settings.myname: return
@@ -292,13 +285,22 @@ class ModIRC(SingleServerIRCBot):
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1:return
 
-		# Replaces own nick with "#nick"
+		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1:return
 				else:
 					body = body.replace(self.settings.myname.lower(), "#nick")
 					body = body.replace(self.settings.myname, "#nick")
+					# Some clever tricks for re-using other user's responses:
+					for x in self.channels[target].users():
+						body = body.replace(x.lower()+":", "#nick:")
+						body = body.replace(x+":", "#nick:")
+						body = body.replace(x.lower()+";", "#nick:")
+						body = body.replace(x+";", "#nick:")
+						body = body.replace("@ "+x.lower(), "@ #nick")
+						body = body.replace("@ "+x, "@ #nick")
+
 
 		if body == "":
 			return
@@ -509,16 +511,13 @@ class ModIRC(SingleServerIRCBot):
 		# Joins replies and public messages
 		if e.eventtype() == "pubmsg" or e.eventtype() == "ctcp":
 			if action == 0:
-				print "[%s] <%s> > %s> %s" % ( get_time(), self.settings.myname, target, message)
 				c.privmsg(target, message)
 			else:
-				print "[%s] <%s> > %s> /me %s" % ( get_time(), self.settings.myname, target, message)
 				c.action(target, message)
 		# Private messages
 		elif e.eventtype() == "privmsg":
 			# normal private msg
 			if action == 0:
-				print "[%s] <%s> > %s> %s" % ( get_time(), self.settings.myname, source, message)
 				c.privmsg(source, message)
 				# send copy to owner
 				if not source in self.owners:
@@ -528,7 +527,6 @@ class ModIRC(SingleServerIRCBot):
 					write_log(source, "["+get_time()+"] ("+self.settings.myname+") "+message)
 			# ctcp action priv msg
 			else:
-				print "[%s] <%s> > %s> /me %s" % ( get_time(), self.settings.myname, target, message)
 				c.action(source, message)
 				# send copy to owner
 				if not source in self.owners:

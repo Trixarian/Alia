@@ -58,3 +58,4 @@ Initial release
 * Altered the default created entry when there is no qdb.dat to be more functional (it works with hello now ;)) [pyborg.py]
 * Alia now responds when her nick is used in actions! [pyborg-irc.py]
 * Alia can now learn and respond with actions! [pyborg-irc.py & pyborg.py]
+* Made commands used in a channel not suffer the dreaded #nick replacement issue [pyborg-irc.py]

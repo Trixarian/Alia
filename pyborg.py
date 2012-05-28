@@ -195,7 +195,7 @@ class pyborg:
 	saves_version = "1.1.0"
 
 	# Main command list
-	commandlist = "Pyborg commands:\n!checkdict, !contexts, !help, !known, !learning, !rebuilddict, !replace, !unlearn, !purge, !version, !words, !limit, !alias, !save, !censor, !uncensor, !owner, !learn, !teach, !forget, !find"
+	commandlist = "Pyborg commands:\n!checkdict, !contexts, !help, !known, !learning, !rebuilddict, !replace, !unlearn, !purge, !version, !words, !limit, !alias, !save, !censor, !uncensor, !learn, !teach, !forget, !find, !responses"
 	commanddict = {
 		"help": "Owner command. Usage: !help [command]\nPrints information about using a command, or a list of commands if no command is given",
 		"version": "Usage: !version\nDisplay what version of Pyborg we are running",
@@ -212,7 +212,11 @@ class pyborg:
 		"uncensor": "Owner command. Usage: !uncensor word1 [word2 [...]]\nRemove censorship on one or more words",
 		"limit": "Owner command. Usage: !limit [number]\nSet the number of words that pyBorg can learn",
 		"alias": "Owner command. Usage: !alias : Show the differents aliases\n!alias <alias> : show the words attached to this alias\n!alias <alias> <word> : link the word to the alias",
-		"owner": "Usage : !owner password\nAdd the user in the owner list"
+		"learn": "Owner command. Usage: !learn trigger | response\nTeaches the bot to respond the any words similar to the trigger word or phrase with a certain response",
+		"teach": "Owner command. Usage: !teach trigger | response\nTeaches the bot to respond the any words similar to the trigger word or phrase with a certain response",
+		"forget": "Owner command. Usage: !forget trigger\nForces the bot to forget all previously learned responses to a certain trigger word or phrase",
+		"find": "Owner command. Usage: !find trigger\nFinds all matches to the trigger word or phrase and displays the amount of matches",
+		"responses": "Owner command. Usage: !responses\nDisplays the total number of trigger/response pairs the bot has learned"
 	}
 
 	def __init__(self):
@@ -344,7 +348,6 @@ class pyborg:
 
 	def save_all(self):
 		if self.settings.process_with == "pyborg" and self.settings.no_save != "True":
-			print "Writing dictionary..."
 			nozip = "no"
 
 			try:
