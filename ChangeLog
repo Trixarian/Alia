@@ -59,3 +59,4 @@ Initial release
 * Alia now responds when her nick is used in actions! [pyborg-irc.py]
 * Alia can now learn and respond with actions! [pyborg-irc.py & pyborg.py]
 * Made commands used in a channel not suffer the dreaded #nick replacement issue [pyborg-irc.py]
+* Added in some clever #nick replacement tricks to broaden Alia's nick centric responses & cleaned up some bad code [pyborg-irc.py]
