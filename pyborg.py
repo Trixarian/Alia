@@ -144,7 +144,7 @@ def filter_message(message, bot):
 		pass
 
 	# Strips out urls not ignored before...
-	message = re.sub("([a-zA-Z0-9\-\_]+?\.)*[a-zA-Z0-9\-\_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*","", message)
+	message = re.sub("([a-zA-Z0-9\-_]+?\.)*[a-zA-Z0-9\-_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*","", message)
 
 	# Strips out characters that we can't support
 	message = re.sub("\003([0-9][0-9]?(,[0-9][0-9]?)?)?|[^\x20-\x7E]","", message)

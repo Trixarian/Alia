@@ -21,6 +21,7 @@
 #
 
 import sys
+import re
 
 try:
 	from ircbot import *
@@ -260,50 +261,46 @@ class ModIRC(SingleServerIRCBot):
 		if self.settings.ignorelist.count(source.lower()) > 0 \
 			and self.settings.reply2ignored == 1:
 			learn = 0
-		elif self.settings.ignorelist.count(source.lower()) > 0:
-			return
+		elif self.settings.ignorelist.count(source.lower()) > 0: return
 
 		# Ignore quoted and urls
 		quoted_message = re.match("( )*(<|\(|\[|\"|'|\.){1}", body[0:2], re.IGNORECASE)
 		url_message = re.match("http(s)*:\/\/", body[0:], re.IGNORECASE) 
-		if quoted_message and not body[0:2] == "<3" and not body[0:3] == "<.<":
-			return
-		if url_message:
-			return
+		if quoted_message and not body[0:2] == "<3" and not body[0:3] == "<.<": return
+		if url_message: return
 
 		# Stealth mode. Disables commands for non owners
 		if (not source in self.owners) and body[0:1] == "!":
 			if (not self.settings.stealth):
-				if self.irc_commands(body, source, target, c, e) == 1:return
+				if self.irc_commands(body, source, target, c, e) == 1: return
 			else: return
 
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
+			body = body.replace(self.settings.myname.lower(), "#nick")
+			body = body.replace(self.settings.myname, "#nick")
 
 			# Parse ModIRC commands
 			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1:return
+				if self.irc_commands(body, source, target, c, e) == 1: return
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
 			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1:return
+				if self.irc_commands(body, source, target, c, e) == 1: return
 				else:
 					body = body.replace(self.settings.myname.lower(), "#nick")
 					body = body.replace(self.settings.myname, "#nick")
 					# Some clever tricks for re-using other user's responses:
 					for x in self.channels[target].users():
+						x = re.sub("[\&\%\+\@\~]","", x)
 						body = body.replace(x.lower()+":", "#nick:")
 						body = body.replace(x+":", "#nick:")
-						body = body.replace(x.lower()+";", "#nick:")
-						body = body.replace(x+";", "#nick:")
 						body = body.replace("@ "+x.lower(), "@ #nick")
 						body = body.replace("@ "+x, "@ #nick")
 
-
-		if body == "":
-			return
+		if body == "": return
 		
 		# Pass message onto pyborg
 		if source in self.owners and e.source() in self.owner_mask:
