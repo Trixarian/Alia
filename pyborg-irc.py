@@ -218,7 +218,6 @@ class ModIRC(SingleServerIRCBot):
 		print "Disconnected"
 		self.connection.execute_delayed(self.reconnection_interval, self._connected_checker)
 
-
 	def on_msg(self, c, e):
 		"""
 		Process messages.
@@ -254,7 +253,7 @@ class ModIRC(SingleServerIRCBot):
 		replyrate = self.settings.speaking * self.settings.reply_chance
 
 		# 85% should be a more human response rate to seeing our own nickname used ;)
-		if "".join(body).lower().find(self.settings.myname.lower()) != -1:
+		if body.find(self.settings.myname) != -1:
 			replyrate = 85
 
 		# Ignore selected nicks
@@ -278,7 +277,6 @@ class ModIRC(SingleServerIRCBot):
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
-			body = body.replace(self.settings.myname.lower(), "#nick")
 			body = body.replace(self.settings.myname, "#nick")
 
 			# Parse ModIRC commands
@@ -287,18 +285,15 @@ class ModIRC(SingleServerIRCBot):
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
+			body = body.replace(self.settings.myname, "#nick")
+			# Some clever tricks for re-using other user's responses:
+			for x in self.channels[target].users():
+				x = re.sub("[\&\%\+\@\~]","", x)
+				body = body.replace(x+":", "#nick:")
+				body = body.replace("@ "+x, "@ #nick")
+
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1: return
-			else:
-				body = body.replace(self.settings.myname.lower(), "#nick")
-				body = body.replace(self.settings.myname, "#nick")
-				# Some clever tricks for re-using other user's responses:
-				for x in self.channels[target].users():
-					x = re.sub("[\&\%\+\@\~]","", x)
-					body = body.replace(x.lower()+":", "#nick:")
-					body = body.replace(x+":", "#nick:")
-					body = body.replace("@ "+x.lower(), "@ #nick")
-					body = body.replace("@ "+x, "@ #nick")
 
 		if body == "": return
 		
