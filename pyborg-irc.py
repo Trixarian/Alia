@@ -253,7 +253,7 @@ class ModIRC(SingleServerIRCBot):
 		replyrate = self.settings.speaking * self.settings.reply_chance
 
 		# 85% should be a more human response rate to seeing our own nickname used ;)
-		if body.find(self.settings.myname) != -1:
+		if self.settings.myname in body:
 			replyrate = 85
 
 		# Ignore selected nicks
@@ -277,23 +277,20 @@ class ModIRC(SingleServerIRCBot):
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
-			body = body.replace(self.settings.myname, "#nick")
-
-			# Parse ModIRC commands
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1: return
+			body = body.replace(self.settings.myname, "#nick")
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
+			if body[0] == "!":
+				if self.irc_commands(body, source, target, c, e) == 1: return
 			body = body.replace(self.settings.myname, "#nick")
 			# Some clever tricks for re-using other user's responses:
 			for x in self.channels[target].users():
 				x = re.sub("[\&\%\+\@\~]","", x)
 				body = body.replace(x+":", "#nick:")
 				body = body.replace("@ "+x, "@ #nick")
-
-			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1: return
 
 		if body == "": return
 		
