@@ -289,16 +289,16 @@ class ModIRC(SingleServerIRCBot):
 		if e.eventtype() == "pubmsg":
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1: return
-				else:
-					body = body.replace(self.settings.myname.lower(), "#nick")
-					body = body.replace(self.settings.myname, "#nick")
-					# Some clever tricks for re-using other user's responses:
-					for x in self.channels[target].users():
-						x = re.sub("[\&\%\+\@\~]","", x)
-						body = body.replace(x.lower()+":", "#nick:")
-						body = body.replace(x+":", "#nick:")
-						body = body.replace("@ "+x.lower(), "@ #nick")
-						body = body.replace("@ "+x, "@ #nick")
+			else:
+				body = body.replace(self.settings.myname.lower(), "#nick")
+				body = body.replace(self.settings.myname, "#nick")
+				# Some clever tricks for re-using other user's responses:
+				for x in self.channels[target].users():
+					x = re.sub("[\&\%\+\@\~]","", x)
+					body = body.replace(x.lower()+":", "#nick:")
+					body = body.replace(x+":", "#nick:")
+					body = body.replace("@ "+x.lower(), "@ #nick")
+					body = body.replace("@ "+x, "@ #nick")
 
 		if body == "": return
 		
