@@ -252,9 +252,9 @@ class ModIRC(SingleServerIRCBot):
 		# We want replies reply_chance%, if speaking is on
 		replyrate = self.settings.speaking * self.settings.reply_chance
 
-		# 85% should be a more human response rate to seeing our own nickname used ;)
+		# A 9 out of 10 chance of responding seems reasonable for seeing our own nickname ;)
 		if self.settings.myname in body:
-			replyrate = 85
+			replyrate = 90
 
 		# Ignore selected nicks
 		if self.settings.ignorelist.count(source.lower()) > 0 \
@@ -277,9 +277,6 @@ class ModIRC(SingleServerIRCBot):
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
-			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1: return
-			body = body.replace(self.settings.myname, "#nick")
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":

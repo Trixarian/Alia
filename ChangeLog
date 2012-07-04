@@ -60,3 +60,6 @@ Initial release
 * Alia can now learn and respond with actions! [pyborg-irc.py & pyborg.py]
 * Made commands used in a channel not suffer the dreaded #nick replacement issue [pyborg-irc.py]
 * Added in some clever #nick replacement tricks to broaden Alia's nick centric responses & cleaned up some bad code [pyborg-irc.py]
+* You don't want it to replace Alia with #nick in Private messages... [pyborg-irc.py]
+* Made longer responses have a maximum of 5 seconds delay before being said [pyborg.py]
+* Unfiltering the teach system's responses like it was supposed to... [pyborg.py]

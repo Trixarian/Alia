@@ -517,7 +517,7 @@ class pyborg:
 
 			# Look if we can find a prepared answer
 			if dbread(body.lower()):
-				message = dbread(body.lower())
+				message = unfilter_reply(dbread(body.lower()), self)
 			else:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
@@ -547,9 +547,9 @@ class pyborg:
 			if message == "":
 				return
 			# else output
-			if len(message) >= 40:
+			if len(message) >= 25:
 				# Quicker response time for long responses
-				time.sleep(8)
+				time.sleep(5)
 			else:
 				time.sleep(.2*len(message))
 			io_module.output(message, args)
