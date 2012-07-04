@@ -1,5 +1,6 @@
-What is this?
-~~~~~~~~~~~~~
+Alia - a PyBorg with a difference
+---------------------------------
+
 Alia is a self-optimising Pyborg IRC Bot with the added ability to be taught via command.
 
 The original Pyborg was written by Tom Morton and Sébastien Dailly. It's a simple python Markov chain driven bot (similar to MegaHAL) with the unique ability to learn speech patterns by figure out which words go togeher well. This gives it the ability to generate replies on it's own aswell as repeating previously learned responses.
@@ -19,8 +20,9 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia can respond to and learn actions! This can be done via the teach system or by observing other user's actions.
 And many more! (See ChangeLog for complete list)
 
-New Commands:
-~~~~~~~~~~~~~
+New Commands
+------------
+
 To teach Alia a response, use the !learn or !teach command with the trigger and response seperated by an |.
 Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters).
 To insert a user's nickname it's responding to into the response, please use the #nick to represent their nick.
@@ -44,8 +46,9 @@ You can also teach Alia to respond with an action instead of a message by prefix
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.
 
-How to use:
-~~~~~~~~~~~
+How to use
+----------
+
 To use Alia, just run python pyborg-irc.py to generate the cfg files. Press Ctrl+C to stop pyborg-irc.py.
 Modify pyborg-irc.cfg and pyborg.cfg to suit your needs and then use ./alia to start the bot silently.
 Now allow her to idle in a busy channel so she can learn some basic responses. That's it. You're done. Enjoy!
