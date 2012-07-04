@@ -253,7 +253,8 @@ class ModIRC(SingleServerIRCBot):
 		replyrate = self.settings.speaking * self.settings.reply_chance
 
 		# A 9 out of 10 chance of responding seems reasonable for seeing our own nickname ;)
-		if self.settings.myname in body:
+		# Responds to lower use of nickname because some people are lazy...
+		if self.settings.myname.lower() in body.lower():
 			replyrate = 90
 
 		# Ignore selected nicks

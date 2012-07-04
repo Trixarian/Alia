@@ -63,3 +63,4 @@ Initial release
 * You don't want it to replace Alia with #nick in Private messages... [pyborg-irc.py]
 * Made longer responses have a maximum of 5 seconds delay before being said [pyborg.py]
 * Unfiltering the teach system's responses like it was supposed to... [pyborg.py]
+* Responds to the lowercase version of own nickname because people don't use Tab auto-completion [pyborg-irc.py]
