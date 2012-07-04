@@ -27,21 +27,29 @@ To teach Alia a response, use the !learn or !teach command with the trigger and 
 Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters).
 To insert a user's nickname it's responding to into the response, please use the #nick to represent their nick.
 Triggers are searched by closest matches so single word or short triggers work better, but words can be searched within longer triggers:
+
 !teach This is a trigger | And this is a response!
+
 !learn Hey There!|Hey #nick!
 
 To see how many responses match a phrase, use the !find command followed by the phrase:
+
 !find Joe
+
 !find Trixar_za is God
 
 To make Alia forget a learned response use the !forget command followed by the phrase:
+
 !forget Joe
+
 !forget Trixar_za is dumb
 
 To see how many responses Alia has learned so far you can use the !responses command:
+
 !responses
 
 You can also teach Alia to respond with an action instead of a message by prefixing plus (+) to the response:
+
 !teach I Love you!|+hugs #nick
 
 For a complete list on how to use Alia, please see docs/README for the original Pyborg documentation.
