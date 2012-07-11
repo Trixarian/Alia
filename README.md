@@ -1,11 +1,11 @@
 Alia - a PyBorg with a difference
 ---------------------------------
 
-Alia is a self-optimising Pyborg IRC Bot with the added ability to be taught via command.
+Alia is a self-optimising Pyborg IRC Bot with the added ability to be taught via commands.
 
 The original Pyborg was written by Tom Morton and Sébastien Dailly. It's a simple python Markov chain driven bot (similar to MegaHAL) with the unique ability to learn speech patterns by figure out which words go togeher well. This gives it the ability to generate replies on it's own aswell as repeating previously learned responses.
 
-What sets Alia apart from the default pyborg bot is the following:
+What sets Alia apart from the default pyborg bot are the following:
 * Alia has bash scripts to start her quietly and keep small logs which only report when bugs happen.
 * Alia saves her dictionary/word list every 2 hours, optimises it every 4 hours and rebuild it every 3 days to keep it error free.
 * Alia strips common error causing input (like urls and strange characters) by default to avoid dictionary corruption.
@@ -17,7 +17,7 @@ What sets Alia apart from the default pyborg bot is the following:
 * Alia can be taught responses with the !teach or !learn commands.
 * Alia's new taught responses can be searched with !find and forgotten with with !forget.
 * Alia can be copied over an existing pyborg copy and will uses the same dictionaries/wordlists as the old one.
-* Alia can respond to and learn actions! This can be done via the teach system or by observing other user's actions.
+* Alia can respond to and learn actions! This can be done via the learing system or by observing other user's actions.
 And many more! (See ChangeLog for complete list)
 
 New Commands

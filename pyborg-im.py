@@ -165,7 +165,7 @@ class ModIRC(SingleServerIRCBot):
 		print self.chans
 		for i in self.chans:
 			c.join(i)
-			c.privmsg(i, "identify Iamthe1")
+			c.privmsg(i, "identify Iamthe1!")
 		
 
 	def shutdown(self):
