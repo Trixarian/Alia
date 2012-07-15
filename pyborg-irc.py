@@ -278,6 +278,8 @@ class ModIRC(SingleServerIRCBot):
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
+			if body[0] == "!":
+				if self.irc_commands(body, source, target, c, e) == 1: return
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
