@@ -152,7 +152,7 @@ def filter_message(message, bot):
 	message = re.sub("([a-zA-Z0-9\-_]+?\.)*[a-zA-Z0-9\-_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*", "", message)
 
 	# Strips out mIRC Control codes
-	message = re.sub("\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x1f\x16\x0f]", "", message)
+	message = re.sub("\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x1f\x16\x0f]/g", "", message)
 
 	# Few of my fixes...
 	message = message.replace(": ", " : ")
@@ -190,6 +190,7 @@ def filter_message(message, bot):
 						words[x] = z
 
 	message = " ".join(words)
+
 	return message
 
 

@@ -8,10 +8,11 @@ The original Pyborg was written by Tom Morton and Sébastien Dailly. It's a simp
 What sets Alia apart from the default pyborg bot are the following:
 * Alia has bash scripts to start her quietly and keep small logs which only report when bugs happen.
 * Alia saves her dictionary/word list every 2 hours, optimises it every 5 hours and rebuild it every 3 days to keep it error free.
-* Alia strips common error causing input (like urls and strange characters) by default to avoid dictionary corruption.
+* Alia strips common error causing input (like urls and control codes) by default to avoid dictionary corruption.
 * Alia doesn't lowercase learned data at all. She'll respond in the same way as she learned it!
 * Alia doesn't mangle emoticons (smileys) or punctuation. She also correct I and I contractions and capitalizes the first letter of every sentence.
 * Alia doesn't mangle nicknames anymore either. She will only replace her own nick in learned responses.
+* Alia is utf-8 compliant and can be used in with most locales!
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
 * Alia can be taught responses with the !teach or !learn commands.
