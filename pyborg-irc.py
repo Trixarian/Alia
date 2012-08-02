@@ -289,8 +289,9 @@ class ModIRC(SingleServerIRCBot):
 			# Some clever tricks for re-using other user's responses:
 			for x in self.channels[target].users():
 				x = re.sub("[\&\%\+\@\~]","", x)
-				body = body.replace(x+":", "#nick:")
-				body = body.replace("@ "+x, "@ #nick")
+				if x not "":
+					body = body.replace(x+":", "#nick:")
+					body = body.replace("@ "+x, "@ #nick")
 
 		if body == "": return
 		

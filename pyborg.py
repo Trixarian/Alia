@@ -36,6 +36,11 @@ import struct
 import time
 import zipfile
 import re
+import threading
+
+def to_sec(s):
+	seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
+	return int(s[:-1])*seconds_per_unit[s[-1]]
 
 # This will make the !learn and !teach magic work ;)
 def dbread(key):
@@ -144,10 +149,10 @@ def filter_message(message, bot):
 		pass
 
 	# Strips out urls not ignored before...
-	message = re.sub("([a-zA-Z0-9\-_]+?\.)*[a-zA-Z0-9\-_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*","", message)
+	message = re.sub("([a-zA-Z0-9\-_]+?\.)*[a-zA-Z0-9\-_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*", "", message)
 
-	# Strips out characters that we can't support
-	message = re.sub("\003([0-9][0-9]?(,[0-9][0-9]?)?)?|[^\x20-\x7E]","", message)
+	# Strips out mIRC Control codes
+	message = re.sub("\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x1f\x16\x0f]", "", message)
 
 	# Few of my fixes...
 	message = message.replace(": ", " : ")
@@ -189,7 +194,6 @@ def filter_message(message, bot):
 
 
 class pyborg:
-	import re
 	import cfgfile
 
 	ver_string = "PyBorg version 1.1.0"
@@ -244,9 +248,14 @@ class pyborg:
 			{ "sentences":	("A list of prepared answers", {})
 			} )
 		self.unfilterd = {}
-		self.base_time = time.time()
-		self.save_time = time.time()
-		self.opt_times = 0
+
+		# Starts the timers:
+		autosave = threading.Timer(to_sec("125m"), self.save_all)
+		autosave.start()
+		autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
+		autopurge.start()
+		autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
+		autorebuild.start()
 
 		if dbread("hello") is None:
 			dbwrite("hello", "hi #nick")
@@ -347,7 +356,7 @@ class pyborg:
 
 		self.settings.save()
 
-	def save_all(self):
+	def save_all(self, restart_timer = True):
 		if self.settings.process_with == "pyborg" and self.settings.no_save != "True":
 			nozip = "no"
 
@@ -379,7 +388,7 @@ class pyborg:
 			f.close()
 
 			#zip the files
-			f = zipfile.ZipFile('archive.zip','w',zipfile.ZIP_DEFLATED)
+			f = zipfile.ZipFile('archive.zip', 'w', zipfile.ZIP_DEFLATED)
 			f.write('words.dat')
 			f.write('lines.dat')
 			try:
@@ -414,75 +423,72 @@ class pyborg:
 			map( (lambda x: f.write(str(x[0])+"\n") ), wordlist)
 			f.close()
 
+			if restart_timer is True:
+				autosave = threading.Timer(to_sec("125m"), self.save_all)
+				autosave.start()
+
 			# Save settings
 			self.settings.save()
 
 	def auto_optimise(self):
-		# This needs work since it seems to corrupt the damn db eventually :/
-		# Let's purge out words with little or no context every day to optimise the word list
-		t = time.time()
-		liste = []
-		compteur = 0
+		if self.settings.process_with == "pyborg" and self.settings.learning == 1:
+			# Let's purge out words with little or no context every day to optimise the word list
+			t = time.time()
+			liste = []
+			compteur = 0
 
-		for w in self.words.keys():
-			digit = 0
-			char = 0
-			for c in w:
-				if c.isalpha():
-					char += 1
-				if c.isdigit():
-					digit += 1
+			for w in self.words.keys():
+				digit = 0
+				char = 0
+				for c in w:
+					if c.isalpha():
+						char += 1
+					if c.isdigit():
+						digit += 1
 
-			try:
-				c = len(self.words[w])
-			except:
-				c = 2
-			if c < 2 or ( digit and char ):
-				liste.append(w)
-				compteur += 1
+				try:
+					c = len(self.words[w])
+				except:
+					c = 2
+				if c < 2 or ( digit and char ):
+					liste.append(w)
+					compteur += 1
 
-		for w in liste[0:]:
-			self.unlearn(w)
+			for w in liste[0:]:
+				self.unlearn(w)
 
-		# Let's rebuild the dictionary every 3 days to prevent purge clogs ;)
-		if self.opt_times >= 15:
-			self.opt_times = 0
-			if self.settings.learning == 1:
-				t = time.time()
+			# Restarts the timer:
+			autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
+			autopurge.start()
 
-				old_lines = self.lines
-				old_num_words = self.settings.num_words
-				old_num_contexts = self.settings.num_contexts
+			# Now let's save the changes to disk and be done ;)
+			self.save_all(False)
 
-				self.words = {}
-				self.lines = {}
-				self.settings.num_words = 0
-				self.settings.num_contexts = 0
+	def auto_rebuild(self):
+		if self.settings.process_with == "pyborg" and self.settings.learning == 1:
+			t = time.time()
 
-				for k in old_lines.keys():
-					self.learn(old_lines[k][0], old_lines[k][1])
-		else:
-			self.opt_times = self.opt_times + 1
+			old_lines = self.lines
+			old_num_words = self.settings.num_words
+			old_num_contexts = self.settings.num_contexts
 
-		# Now let's save the changes to disk and be done ;)
-		self.save_all()
+			self.words = {}
+			self.lines = {}
+			self.settings.num_words = 0
+			self.settings.num_contexts = 0
+
+			for k in old_lines.keys():
+				self.learn(old_lines[k][0], old_lines[k][1])
+		
+			# Restarts the timer
+			autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
+			autorebuild.start()
 
 	def process_msg(self, io_module, body, replyrate, learn, args, owner=0):
 		"""
 		Process message 'body' and pass back to IO module with args.
 		If owner==1 allow owner commands.
 		"""
-		auto_time = time.time()
-		# Let's purge the db every 4 hours ;)
-		if (auto_time-self.base_time) >= 17304 and self.settings.process_with == "pyborg":
-			self.auto_optimise()
-			self.base_time = time.time()
-
-		# Let's save a copy of the db every 2 hours
-		if (auto_time-self.save_time) >= 7210 and self.settings.process_with == "pyborg":
-			self.save_all()
-			self.save_time = time.time()
-
 		try:
 			if self.settings.process_with == "megahal": import mh_python
 		except:
@@ -665,7 +671,7 @@ class pyborg:
 		if owner == 1:
 			# Save dictionary
 			if command_list[0] == "!save":
-				self.save_all()
+				self.save_all(False)
 				msg = "Dictionary saved"
 
 			# Command list
