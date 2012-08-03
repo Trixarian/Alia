@@ -38,6 +38,8 @@ import zipfile
 import re
 import threading
 
+timers_started = False
+
 def to_sec(s):
 	seconds_per_unit = {"s": 1, "m": 60, "h": 3600, "d": 86400, "w": 604800}
 	return int(s[:-1])*seconds_per_unit[s[-1]]
@@ -252,7 +254,8 @@ class pyborg:
 		self.unfilterd = {}
 
 		# Starts the timers:
-		if threading.activeCount() <= 3:
+		global timers_started
+		if timers_started is False:
 			try:
 				self.autosave = threading.Timer(to_sec("125m"), self.save_all)
 				self.autosave.start()
@@ -260,6 +263,7 @@ class pyborg:
 				self.autopurge.start()
 				self.autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
 				self.autorebuild.start()
+				timers_started = True
 			except SystemExit, e:
 				self.autosave.cancel()
 				self.autopurge.cancel()

@@ -451,7 +451,8 @@ class ModIRC(SingleServerIRCBot):
 					msg = "Quit message is \"%s\"" % self.settings.quitmsg
 			# make the pyborg quit
 			elif command_list[0] == "!quit":
-				sys.exit()
+				self.pyborg.kill_timers()
+				sys.exit(0)
 			# Change reply rate
 			elif command_list[0] == "!replyrate":
 				try:
@@ -553,9 +554,9 @@ if __name__ == "__main__":
 	try:
 		bot.our_start()
 	except KeyboardInterrupt, e:
-		pass
+		my_pyborg.kill_timers()
 	except SystemExit, e:
-		pass
+		my_pyborg.kill_timers()
 	except:
 		traceback.print_exc()
 	bot.disconnect(bot.settings.quitmsg)
