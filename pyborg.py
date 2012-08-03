@@ -152,7 +152,8 @@ def filter_message(message, bot):
 	message = re.sub("([a-zA-Z0-9\-_]+?\.)*[a-zA-Z0-9\-_]+?\.[a-zA-Z]{2,4}(\/[a-zA-Z0-9]*)*", "", message)
 
 	# Strips out mIRC Control codes
-	message = re.sub("\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x1f\x16\x0f]/g", "", message)
+	ccstrip = re.compile("\x1f|\x02|\x12|\x0f|\x16|\x03(?:\d{1,2}(?:,\d{1,2})?)?", re.UNICODE)
+	message = ccstrip.sub("", message)
 
 	# Few of my fixes...
 	message = message.replace(": ", " : ")
@@ -251,12 +252,18 @@ class pyborg:
 		self.unfilterd = {}
 
 		# Starts the timers:
-		autosave = threading.Timer(to_sec("125m"), self.save_all)
-		autosave.start()
-		autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
-		autopurge.start()
-		autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
-		autorebuild.start()
+		self.autosave = threading.Timer(to_sec("125m"), self.save_all)
+		self.autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
+		self.autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
+
+		try:
+			self.autosave.start()
+			self.autopurge.start()
+			self.autorebuild.start()
+		except SystemExit, e:
+			self.autosave.cancel()
+			self.autopurge.cancel()
+			self.autorebuild.cancel()
 
 		if dbread("hello") is None:
 			dbwrite("hello", "hi #nick")
@@ -425,8 +432,8 @@ class pyborg:
 			f.close()
 
 			if restart_timer is True:
-				autosave = threading.Timer(to_sec("125m"), self.save_all)
-				autosave.start()
+				self.autosave = threading.Timer(to_sec("125m"), self.save_all)
+				self.autosave.start()
 
 			# Save settings
 			self.settings.save()
@@ -459,8 +466,8 @@ class pyborg:
 				self.unlearn(w)
 
 			# Restarts the timer:
-			autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
-			autopurge.start()
+			self.autopurge = threading.Timer(to_sec("5h"), self.auto_optimise)
+			self.autopurge.start()
 
 			# Now let's save the changes to disk and be done ;)
 			self.save_all(False)
@@ -482,8 +489,13 @@ class pyborg:
 				self.learn(old_lines[k][0], old_lines[k][1])
 		
 			# Restarts the timer
-			autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
-			autorebuild.start()
+			self.autorebuild = threading.Timer(to_sec("71h"), self.auto_rebuild)
+			self.autorebuild.start()
+
+	def kill_timers(self):
+		self.autosave.cancel()
+		self.autopurge.cancel()
+		self.autorebuild.cancel()
 
 	def process_msg(self, io_module, body, replyrate, learn, args, owner=0):
 		"""
