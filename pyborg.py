@@ -252,7 +252,7 @@ class pyborg:
 		self.unfilterd = {}
 
 		# Starts the timers:
-		if threading.active_count() <= 3:
+		if threading.activeCount() <= 3:
 			try:
 				self.autosave = threading.Timer(to_sec("125m"), self.save_all)
 				self.autosave.start()
