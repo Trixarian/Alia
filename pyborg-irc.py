@@ -251,6 +251,7 @@ class ModIRC(SingleServerIRCBot):
 
 		# We want replies reply_chance%, if speaking is on
 		replyrate = self.settings.speaking * self.settings.reply_chance
+		not_quiet = self.settings.speaking
 
 		# A 9 out of 10 chance of responding seems reasonable for seeing our own nickname ;)
 		# Responds to lower use of nickname because some people are lazy...
@@ -278,6 +279,7 @@ class ModIRC(SingleServerIRCBot):
 		# Always reply to private messages
 		if e.eventtype() == "privmsg":
 			replyrate = 100
+			not_quiet = 1
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1: return
 
@@ -286,10 +288,11 @@ class ModIRC(SingleServerIRCBot):
 			if body[0] == "!":
 				if self.irc_commands(body, source, target, c, e) == 1: return
 			body = body.replace(self.settings.myname, "#nick")
-			# Some clever tricks for re-using other user's responses:
+			body = body.replace(self.settings.myname.lower(), "#nick")
+			# Some clever tricks for re-using other users' responses:
 			for x in self.channels[target].users():
 				x = re.sub("[\&\%\+\@\~]","", x)
-				if x is not "":
+				if x:
 					body = body.replace(x+":", "#nick:")
 					body = body.replace("@ "+x, "@ #nick")
 
@@ -300,7 +303,7 @@ class ModIRC(SingleServerIRCBot):
 			self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
 		else:
 			#start a new thread
-			thread.start_new_thread(self.pyborg.process_msg, (self, body, replyrate, learn, (body, source, target, c, e)))
+			thread.start_new_thread(self.pyborg.process_msg, (self, body, replyrate, learn, (body, source, target, c, e), 0, not_quiet))
 
 	def irc_commands(self, body, source, target, c, e):
 		"""
@@ -478,10 +481,12 @@ class ModIRC(SingleServerIRCBot):
 		body, source, target, c, e = args
 
 		# Let's try fixing #nick responses...
-		message = message.split()
+		message = message.strip().split()
 		if message[0] == "#nick,":
 			message[0] = "#nick:"
 		if message[0] == "#nick;":
+			message[0] = "#nick:"
+		if message[0] == ":":
 			message[0] = "#nick:"
 		message = " ".join(message)
 

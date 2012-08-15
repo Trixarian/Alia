@@ -501,10 +501,11 @@ class pyborg:
 		self.autopurge.cancel()
 		self.autorebuild.cancel()
 
-	def process_msg(self, io_module, body, replyrate, learn, args, owner=0):
+	def process_msg(self, io_module, body, replyrate, learn, args, owner=0, not_quiet=1):
 		"""
 		Process message 'body' and pass back to IO module with args.
 		If owner==1 allow owner commands.
+		If not_quiet==0 Only respond with taught responses
 		"""
 		try:
 			if self.settings.process_with == "megahal": import mh_python
@@ -541,7 +542,7 @@ class pyborg:
 			# Look if we can find a prepared answer
 			if dbread(body.lower()):
 				message = unfilter_reply(dbread(body.lower()), self)
-			else:
+			elif not_quiet == 1:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
 					if re.search(pattern, body, re.IGNORECASE):
@@ -560,7 +561,7 @@ class pyborg:
 						message = unfilter_reply(message, self)
 					elif self.settings.process_with == "megahal":
 						message = mh_python.doreply(body)
-						message = unfilter_reply(message, self)
+			else: return
 
 			# single word reply: always output
 			if len(message.split()) == 1:
