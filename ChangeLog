@@ -70,3 +70,4 @@ Initial release
 * Fixed the locale characters stripping issue by making the regex only strip mIRC control codes [pyborg.py]
 * Added a check for empty nicknames with the new 'smart' replacement trick [pyborg-irc.py]
 * Made the timers stop when pyborg closes [pyborg-irc.py & pyborg.py]
+* Compartmentlized responses to ONLY taught responses when bot is in silent mode. [pyborg-irc.py & pyborg.py]

@@ -300,7 +300,7 @@ class ModIRC(SingleServerIRCBot):
 		
 		# Pass message onto pyborg
 		if source in self.owners and e.source() in self.owner_mask:
-			self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), owner=1)
+			self.pyborg.process_msg(self, body, replyrate, learn, (body, source, target, c, e), 1, not_quiet)
 		else:
 			#start a new thread
 			thread.start_new_thread(self.pyborg.process_msg, (self, body, replyrate, learn, (body, source, target, c, e), 0, not_quiet))
