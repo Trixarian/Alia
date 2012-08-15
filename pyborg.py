@@ -85,7 +85,7 @@ def teach_filter(message):
 	message = message.replace(":|", "$b1")
 	return message
 
-def unfilter_reply(message, self):
+def unfilter_reply(message):
 	"""
 	This undoes the phrase mangling the central code does
 	so the bot sounds more human :P
@@ -540,14 +540,14 @@ class pyborg:
 			message  = ""
 
 			# Look if we can find a prepared answer
-			if dbread(body.lower()):
-				message = unfilter_reply(dbread(body.lower()), self)
+			if dbread(body.strip()):
+				message = unfilter_reply(dbread(body.strip()))
 			elif not_quiet == 1:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
 					if re.search(pattern, body, re.IGNORECASE):
 						message = self.answers.sentences[sentence][randint(0, len(self.answers.sentences[sentence])-1)]
-						message = unfilter_reply(message, self)
+						message = unfilter_reply(message)
 						break
 					else:
 						if body in self.unfilterd:
@@ -558,7 +558,7 @@ class pyborg:
 				if message == "":
 					if self.settings.process_with == "pyborg":
 						message = self.reply(body)
-						message = unfilter_reply(message, self)
+						message = unfilter_reply(message)
 					elif self.settings.process_with == "megahal":
 						message = mh_python.doreply(body)
 			else: return
