@@ -540,8 +540,8 @@ class pyborg:
 			message  = ""
 
 			# Look if we can find a prepared answer
-			if dbread(body.strip()):
-				message = unfilter_reply(dbread(body.strip()))
+			if dbread(body):
+				message = unfilter_reply(dbread(body))
 			elif not_quiet == 1:
 				for sentence in self.answers.sentences.keys():
 					pattern = "^%s$" % sentence
