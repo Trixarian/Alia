@@ -250,7 +250,7 @@ class ModIRC(SingleServerIRCBot):
 		if source == self.settings.myname: return
 
 		# We want replies reply_chance%, if speaking is on
-		replyrate = self.settings.speaking * self.settings.reply_chance
+		replyrate = self.settings.reply_chance
 		not_quiet = self.settings.speaking
 
 		# A 9.5 out of 10 chance of responding seems reasonable for seeing our own nickname ;)
