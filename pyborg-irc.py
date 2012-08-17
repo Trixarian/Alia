@@ -216,6 +216,7 @@ class ModIRC(SingleServerIRCBot):
 
 	def _on_disconnect(self, c, e):
 		print "Disconnected"
+		self.pyborg.kill_timers()
 		self.connection.execute_delayed(self.reconnection_interval, self._connected_checker)
 
 	def on_msg(self, c, e):
