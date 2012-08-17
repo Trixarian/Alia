@@ -553,5 +553,6 @@ if __name__ == "__main__":
 		my_pyborg.kill_timers()
 	except:
 		traceback.print_exc()
+	my_pyborg.kill_timers()
 	bot.disconnect(bot.settings.quitmsg)
 	del my_pyborg
