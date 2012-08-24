@@ -167,9 +167,11 @@ class ModIRC(SingleServerIRCBot):
 
 	def shutdown(self):
 		try:
+			my_pyborg.kill_timers()
 			self.die() # disconnect from server
 		except AttributeError, e:
 			# already disconnected probably (pingout or whatever)
+			my_pyborg.kill_timers()
 			pass
 
 	def get_version(self):
