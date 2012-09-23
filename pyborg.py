@@ -50,7 +50,10 @@ def dbread(key):
 	if os.path.isfile("qdb.dat"):
 		file = open("qdb.dat")
 		for line in file.readlines():
-			if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+			data = line.split(":=:")[0]
+			data2 = r'\b%s[a-z]{,4}\b' % data
+			key2 = r'\b%s[a-z]{,4}\b' % key
+			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 				if key.lower() is "":
 					break
 				else:
@@ -68,7 +71,10 @@ def dbwrite(key, value):
 
 	else:
 		for line in fileinput.input("qdb.dat" ,inplace =1):
-			if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+			data = line.split(":=:")[0]
+			data2 = r'\b%s[a-z]{,4}\b' % data
+			key2 = r'\b%s[a-z]{,4}\b' % key
+			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 				print str(key)+":=:"+str(value)
 			else:
 				print line.strip()
@@ -613,12 +619,15 @@ class pyborg:
 					fcount = 0
 					key = ' '.join(command_list[1:]).strip()
 					for line in fileinput.input("qdb.dat" ,inplace =1):
-						if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+						data = line.split(":=:")[0]
+						data2 = r'\b%s[a-z]{,4}\b' % data
+						key2 = r'\b%s[a-z]{,4}\b' % key
+						if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 							fcount = fcount+1
 							pass
 						else: print line.strip()
 					if fcount > 1: msg = "I've forgotten %d instances of %s" % (fcount, key)
-					else: msg = "I've forgotten %d instance of %s" % (fcount, key)
+					else: msg = "I've forgotten 1 instance of %s" % (fcount, key)
 				except: msg = "Sorry, I couldn't forget that!"
 			else: msg = "You have to teach me before you can make me forget it!"
 
@@ -626,16 +635,23 @@ class pyborg:
 		if command_list[0] == "!find":
 			if os.path.isfile("qdb.dat"):
 				rcount = 0
+				matches = ""
 				key = ' '.join(command_list[1:]).strip()
 				file = open("qdb.dat")
 				for line in file.readlines():
-					if key.lower() in line.split(":=:")[0].lower() or line.split(":=:")[0].lower() in key.lower():
+					data = line.split(":=:")[0]
+					data2 = r'\b%s[a-z]{,4}\b' % data
+					key2 = r'\b%s[a-z]{,4}\b' % key
+					if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 						if key.lower() is "": pass
-						else: rcount = rcount+1
+						else:
+							rcount = rcount+1
+							if matches == "": matches = data
+							else: matches = matches+", "+data
 				file.close()
-				if rcount < 1: msg = "I have no response for %s" % key
-				elif rcount == 1: msg = "I have %d response for %s" % (rcount, key)
-				else: msg = "I have %d responses for %s" % (rcount, key)
+				if rcount < 1: msg = "I have no match for %s" % key
+				elif rcount == 1: msg = "I found 1 match: %s" % matches
+				else: msg = "I found %d matches: %s" % (rcount, matches)
 			else: msg = "You need to teach me something first!"
 
 		if command_list[0] == "!responses":
@@ -647,7 +663,7 @@ class pyborg:
 					else: rcount = rcount+1
 				file.close()
 				if rcount < 1: msg = "I've learned no responses"
-				elif rcount == 1: msg = "I've learned %d responses" % rcount
+				elif rcount == 1: msg = "I've learned only 1 response" % rcount
 				else: msg = "I've learned %d responses" % rcount
 			else: msg = "You need to teach me something first!"
 
