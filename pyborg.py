@@ -51,8 +51,8 @@ def dbread(key):
 		file = open("qdb.dat")
 		for line in file.readlines():
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data
-			key2 = r'\b%s[a-z]{,4}\b' % key
+			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
+			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
 			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 				if key.lower() is "":
 					break
@@ -72,8 +72,8 @@ def dbwrite(key, value):
 	else:
 		for line in fileinput.input("qdb.dat" ,inplace =1):
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data
-			key2 = r'\b%s[a-z]{,4}\b' % key
+			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
+			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
 			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 				print str(key)+":=:"+str(value)
 			else:
@@ -620,8 +620,8 @@ class pyborg:
 					key = ' '.join(command_list[1:]).strip()
 					for line in fileinput.input("qdb.dat" ,inplace =1):
 						data = line.split(":=:")[0]
-						data2 = r'\b%s[a-z]{,4}\b' % data
-						key2 = r'\b%s[a-z]{,4}\b' % key
+						data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
+						key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
 						if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 							fcount = fcount+1
 							pass
@@ -640,8 +640,8 @@ class pyborg:
 				file = open("qdb.dat")
 				for line in file.readlines():
 					data = line.split(":=:")[0]
-					data2 = r'\b%s[a-z]{,4}\b' % data
-					key2 = r'\b%s[a-z]{,4}\b' % key
+					data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
+					key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
 					if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 						if key.lower() is "": pass
 						else:
