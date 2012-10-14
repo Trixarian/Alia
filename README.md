@@ -15,7 +15,7 @@ What sets Alia apart from the default pyborg bot are the following:
 * Alia is utf-8 compliant and can be used in with most locales!
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
-* Alia can be taught responses with the !teach or !learn commands.
+* Alia can be taught multiple random responses with the !teach or !learn command.
 * Alia's new taught responses can be searched with !find and forgotten with with !forget.
 * Alia can be copied over an existing pyborg copy and will uses the same dictionaries/wordlists as the old one.
 * Alia can respond to and learn actions! This can be done via the learing system or by observing other user's actions.
@@ -24,12 +24,11 @@ And many more! (See ChangeLog for complete list)
 New Commands
 ------------
 
-To teach Alia a response, use the !learn or !teach command with the trigger and response seperated by an |.
-Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters).
-To insert a user's nickname it's responding to into the response, please use the #nick to represent their nick.
-Triggers are searched by closest matches so single word or short triggers work better, but words can be searched within longer triggers:  
+To teach Alia a response, use the !learn or !teach command with the trigger and response seperated by an |. Spaces don't matter, but the length is limited to the standard IRC message line (around 500 characters). Multiple responses in the same line is also supported and will be picked at random based on the amount of responses saved for a trigger.
+Triggers are searched by closest matches so single words or short triggers work better, but words can be searched within longer triggers:  
 !teach This is a trigger | And this is a response!  
-!learn Hey There!|Hey #nick!
+!learn Hey There!|Hey to you too! ;)
+!teach Trigger | Response 1 | Response 2 | Oh My
 
 To see how many responses match a phrase, use the !find command followed by the phrase:  
 !find Joe  

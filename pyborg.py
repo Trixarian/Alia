@@ -50,15 +50,22 @@ def dbread(key):
 	if os.path.isfile("qdb.dat"):
 		file = open("qdb.dat")
 		for line in file.readlines():
+			reps = int(len(line.split(":=:"))-1)
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
-			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
+			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
+			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
 			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-				if key.lower() is "":
+				if key is "":
+					value = None
 					break
 				else:
-					try: value = int(line.split(":=:")[1].strip())
-					except ValueError, err: value = line.split(":=:")[1].strip()
+					if reps > 1:
+						repnum = randint(1, int(reps))
+						try: value = int(line.split(":=:")[repnum].strip())
+						except ValueError, err: value = line.split(":=:")[repnum].strip()
+					else:
+						try: value = int(line.split(":=:")[1].strip())
+						except ValueError, err: value = line.split(":=:")[1].strip()
 					break
 		file.close()
 	return value
@@ -70,12 +77,12 @@ def dbwrite(key, value):
 		file.close()
 
 	else:
-		for line in fileinput.input("qdb.dat" ,inplace =1):
+		for line in fileinput.input("qdb.dat",inplace=1):
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
-			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
+			data2 = r'\b%s\b' % data.replace("+","\+")
+			key2 = r'\b%s\b' % key.replace("+","\+")
 			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-				print str(key)+":=:"+str(value)
+				print str(line.strip())+":=:"+str(value)
 			else:
 				print line.strip()
 
@@ -604,11 +611,21 @@ class pyborg:
 			try:
 				key = ' '.join(command_list[1:]).split("|")[0].strip()
 				key = re.sub("[\.\,\?\*\"\'!]","", key)
-				value = teach_filter(' '.join(command_list[1:]).split("|")[1].strip())
+				rnum = int(len(' '.join(command_list[1:]).split("|"))-1)
 				if "#nick" in key:
 					msg = "Stop trying to teach me something that will break me!"
 				else:
+					value = teach_filter(' '.join(command_list[1:]).split("|")[1].strip())
 					dbwrite(key[0:], value[0:])
+					if rnum > 1: 
+						array = ' '.join(command_list[1:]).split("|")
+						rcount = 1
+						for value in array:
+							if rcount == 1:	rcount = rcount+1
+							else: dbwrite(key[0:], teach_filter(value[0:].strip()))
+					else:
+						value = ' '.join(command_list[1:]).split("|")[1].strip()
+						dbwrite(key[0:], teach_filter(value[0:]))
 					msg = "New response learned for %s" % key
 			except: msg = "I couldn't learn that!"
 
@@ -616,18 +633,15 @@ class pyborg:
 		if command_list[0] == "!forget":
 			if os.path.isfile("qdb.dat"):
 				try:
-					fcount = 0
 					key = ' '.join(command_list[1:]).strip()
 					for line in fileinput.input("qdb.dat" ,inplace =1):
 						data = line.split(":=:")[0]
-						data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
-						key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
+						data2 = r'\b%s\b' % data.replace("+","\+")
+						key2 = r'\b%s\b' % key.replace("+","\+")
 						if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-							fcount = fcount+1
 							pass
 						else: print line.strip()
-					if fcount > 1: msg = "I've forgotten %d instances of %s" % (fcount, key)
-					else: msg = "I've forgotten 1 instance of %s" % (fcount, key)
+						msg = "I've forgotten %s" % key
 				except: msg = "Sorry, I couldn't forget that!"
 			else: msg = "You have to teach me before you can make me forget it!"
 
