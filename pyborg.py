@@ -79,8 +79,8 @@ def dbwrite(key, value):
 	else:
 		for line in fileinput.input("qdb.dat",inplace=1):
 			data = line.split(":=:")[0]
-			data2 = r'\b%s\b' % data.replace("+","\+")
-			key2 = r'\b%s\b' % key.replace("+","\+")
+			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
+			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
 			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 				print str(line.strip())+":=:"+str(value)
 			else:
@@ -636,8 +636,8 @@ class pyborg:
 					key = ' '.join(command_list[1:]).strip()
 					for line in fileinput.input("qdb.dat" ,inplace =1):
 						data = line.split(":=:")[0]
-						data2 = r'\b%s\b' % data.replace("+","\+")
-						key2 = r'\b%s\b' % key.replace("+","\+")
+						data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
+						key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
 						if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
 							pass
 						else: print line.strip()

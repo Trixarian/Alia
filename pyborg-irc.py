@@ -283,13 +283,17 @@ class ModIRC(SingleServerIRCBot):
 		if e.eventtype() == "privmsg":
 			replyrate = 100
 			not_quiet = 1
-			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1: return
+			try:
+				if body[0] == "!":
+					if self.irc_commands(body, source, target, c, e) == 1: return
+			except: pass
 
 		# Replaces own nick with #nick
 		if e.eventtype() == "pubmsg":
-			if body[0] == "!":
-				if self.irc_commands(body, source, target, c, e) == 1: return
+			try:
+				if body[0] == "!":
+					if self.irc_commands(body, source, target, c, e) == 1: return
+			except: pass
 			body = body.replace(self.settings.myname, "#nick")
 			body = body.replace(self.settings.myname.lower(), "#nick")
 			# Some clever tricks for re-using other users' responses:
