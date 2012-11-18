@@ -52,21 +52,18 @@ def dbread(key):
 		for line in file.readlines():
 			reps = int(len(line.split(":=:"))-1)
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
-			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
-			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-				if key is "":
-					value = None
-					break
-				else:
+			dlen = r'\b.{2,}\b'
+			if re.search(dlen, key, re.IGNORECASE):			
+				if key.lower() in data.lower() or data.lower() in key.lower():
 					if reps > 1:
 						repnum = randint(1, int(reps))
-						try: value = int(line.split(":=:")[repnum].strip())
-						except ValueError, err: value = line.split(":=:")[repnum].strip()
-					else:
-						try: value = int(line.split(":=:")[1].strip())
-						except ValueError, err: value = line.split(":=:")[1].strip()
+						value = line.split(":=:")[repnum].strip()
+					else: value = line.split(":=:")[1].strip()
 					break
+			else:
+				value = None
+				break
+				
 		file.close()
 	return value
 
@@ -79,10 +76,10 @@ def dbwrite(key, value):
 	else:
 		for line in fileinput.input("qdb.dat",inplace=1):
 			data = line.split(":=:")[0]
-			data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
-			key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
-			if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-				print str(line.strip())+":=:"+str(value)
+			dlen = r'\b.{2,}\b'
+			if re.search(dlen, key, re.IGNORECASE):			
+				if key.lower() in data.lower() or data.lower() in key.lower():
+					print str(line.strip())+":=:"+str(value)
 			else:
 				print line.strip()
 
@@ -636,10 +633,10 @@ class pyborg:
 					key = ' '.join(command_list[1:]).strip()
 					for line in fileinput.input("qdb.dat" ,inplace =1):
 						data = line.split(":=:")[0]
-						data2 = r'\b%s[a-z]{,4}\b' % data.replace("+","\+")
-						key2 = r'\b%s[a-z]{,4}\b' % key.replace("+","\+")
-						if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-							pass
+						dlen = r'\b.{2,}\b'
+						if re.search(dlen, key, re.IGNORECASE):			
+							if key.lower() in data.lower() or data.lower() in key.lower():
+								pass
 						else: print line.strip()
 						msg = "I've forgotten %s" % key
 				except: msg = "Sorry, I couldn't forget that!"
@@ -654,14 +651,14 @@ class pyborg:
 				file = open("qdb.dat")
 				for line in file.readlines():
 					data = line.split(":=:")[0]
-					data2 = r'\b%s[a-z]{,4}\b' % data.replace("+", "\+")
-					key2 = r'\b%s[a-z]{,4}\b' % key.replace("+", "\+")
-					if re.search(key2, data, re.IGNORECASE) or re.search(data2, key, re.IGNORECASE):
-						if key.lower() is "": pass
-						else:
-							rcount = rcount+1
-							if matches == "": matches = data
-							else: matches = matches+", "+data
+					dlen = r'\b.{2,}\b'
+					if re.search(dlen, key, re.IGNORECASE):			
+						if key.lower() in data.lower() or data.lower() in key.lower():
+							if key.lower() is "": pass
+							else:
+								rcount = rcount+1
+								if matches == "": matches = data
+								else: matches = matches+", "+data
 				file.close()
 				if rcount < 1: msg = "I have no match for %s" % key
 				elif rcount == 1: msg = "I found 1 match: %s" % matches

@@ -12,7 +12,7 @@ What sets Alia apart from the default pyborg bot are the following:
 * Alia doesn't lowercase learned data at all. She'll respond in the same way as she learned it!
 * Alia doesn't mangle emoticons (smileys) or punctuation. She also correct I and I contractions and capitalizes the first letter of every sentence.
 * Alia doesn't mangle nicknames anymore either. She will only replace her own nick in learned responses.
-* Alia is utf-8 compliant and can be used in with most locales!
+* Alia is utf-8 compliant and can be used with most locales!
 * Alia logs all private conversation (except with masters) in a physical form (example: http://user.gigirc.com/~brenton/logs/)
 * Alia can be talked to with IM clients using bitlbee and pyborg-im.py! (Example: http://www.facebook.com/alia.smart)
 * Alia can be taught multiple random responses with the !teach or !learn command.
