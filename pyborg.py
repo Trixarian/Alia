@@ -674,7 +674,7 @@ class pyborg:
 					else: rcount = rcount+1
 				file.close()
 				if rcount < 1: msg = "I've learned no responses"
-				elif rcount == 1: msg = "I've learned only 1 response" % rcount
+				elif rcount == 1: msg = "I've learned only 1 response"
 				else: msg = "I've learned %d responses" % rcount
 			else: msg = "You need to teach me something first!"
 
